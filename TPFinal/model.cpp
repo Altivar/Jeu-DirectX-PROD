@@ -304,14 +304,13 @@ bool Model::LoadData()
             if(input == ' ')
             {
 				
-				int gh = 45;
 				// create the face
 				Face* face = new Face();
 				// check and create all the vertex of the face
 				while(true)
 				{
 					
-					int v, t;
+					/*int v, t;
 					fin >> v;
 					fin.get(input);
 					if(input == ' ' || input == '\n')
@@ -335,13 +334,32 @@ bool Model::LoadData()
 						vertex.y = _vertex[v].y;
 						vertex.z = -_vertex[v].z;
 						vertex.COLOR = 0xffff00ff;
-						vertex.u = _textures[t].x;
-						vertex.v = _textures[t].y;
+						vertex.u = 1 - _textures[t].x;
+						vertex.v = 1 - _textures[t].y;
 						face->AddVertex(vertex);
 					}
 					else
 						continue;
 
+
+					while(input != ' ' && input != '\n')
+						fin.get(input);
+					if(input == '\n')
+						break;*/
+					///////////////////////////////////////////////////////
+
+					///////////////////////////////////////////////////////
+					int v, t;
+					fin >> v >> input >> t;
+
+					CUSTOM_VERTEX vertex;
+					vertex.x = _vertex[v].x;
+					vertex.y = _vertex[v].y;
+					vertex.z = -_vertex[v].z;
+					vertex.COLOR = 0xffff00ff;
+					vertex.u = 1 - _textures[t].x;
+					vertex.v = 1 - _textures[t].y;
+					face->AddVertex(vertex);
 
 					while(input != ' ' && input != '\n')
 						fin.get(input);

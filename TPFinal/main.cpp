@@ -268,7 +268,7 @@ void Update()
 	{
 		//(*it1)->Translate(0, 0, -0.01f);
 		//(*it1)->Scale(0.99f);
-		(*it1)->Rotate(0.00f, 0.05f, 0.00f);
+		(*it1)->Rotate(0.05f, 0.00f, 0.00f);
 	}
 
 	if(GetAsyncKeyState(VK_LEFT))

@@ -14,19 +14,19 @@ ModelsSingleton::ModelsSingleton(void)
 	
 	_modelCube.InitModel( ".\\Resources\\cube.obj" , ".\\Resources\\diamond_ore.png" );
 
-	_modelTorus.InitModel( ".\\Resources\\torus.obj" , ".\\Resources\\stonebrick_mossy.png" );
+	//_modelTorus.InitModel( ".\\Resources\\torus.obj" , ".\\Resources\\stonebrick_mossy.png" );
 
-	_modelThing.InitModel( ".\\Resources\\untitled.obj" , ".\\Resources\\redstone_block.png" );
+	//_modelThing.InitModel( ".\\Resources\\untitled.obj" , ".\\Resources\\redstone_block.png" );
 
 	_modelBook.InitModel( ".\\Resources\\LivreFerme.obj" , ".\\Resources\\LivreFermeRouge.png" );
 	
 
-	Model* m1 = new Model(_modelCube);
-	m1->SetTexture(".\\Resources\\stonebrick_mossy.png");
-	m1->Translate(0, 0, 5);
+	Model* m1 = new Model(_modelBook);
+	m1->SetTexture(".\\Resources\\LivreFermeRouge.png");
+	m1->Translate(0.0f, 1.0f, -1.0f);
 	_models.push_back(m1);
 
-	Model* m2 = new Model(_modelCube);
+	/*Model* m2 = new Model(_modelCube);
 	m2->SetTexture(".\\Resources\\diamond_ore.png");
 	m2->Translate(0, 3, 0);
 	_models.push_back(m2);
@@ -44,7 +44,7 @@ ModelsSingleton::ModelsSingleton(void)
 	Model* m5 = new Model();
 	m5->InitModel(".\\Resources\\cubenotex.obj" , ".\\Resources\\redstone_block.png" );
 	m5->Translate(2, 1, 0);
-	_models.push_back(m5);
+	_models.push_back(m5);*/
 
 	/*Model* m6 = new Model(_modelBook);
 	m6->Translate(0, 0, 0);
