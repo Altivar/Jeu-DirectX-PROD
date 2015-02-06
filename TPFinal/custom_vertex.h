@@ -20,3 +20,13 @@ struct CUSTOM_VERTEX
 };
 #define D3DFVF_CUSTOM_VERTEX (D3DFVF_XYZ|D3DFVF_DIFFUSE|D3DFVF_TEX1)
 
+//////////////////////////
+//  VERTEX STRUCT DATA  //
+//////////////////////////
+struct CUSTOM_VERTEX_DATA
+{
+	int vertexPosition;  // position
+	DWORD COLOR;         // color
+	int texturePosition; // texture
+};
+

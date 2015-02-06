@@ -12,8 +12,14 @@ float PI = 3.141592f;
 Model::Model(void)
 {
 	SetLocation(0,0,0);
+	_futureLocation = _location;
 	SetRotation(0,0,0);
 	SetScale(1);
+	_scale = 1.0f;
+	_changeLocation = false;
+	_changeRotation = false;
+	_changeScale = false;
+	_listVertex.clear();
 }
 
 Model::Model(const Model& model)
@@ -47,12 +53,22 @@ Model::Model(const Model& model)
 		this->nbTexture++;
 	}
 
+	this->_listVertex.clear();
+	this->_listVertex = model._listVertex;
+
 	this->_texture = model._texture;
 	this->_name = model._name;
 	
 	this->_location = model._location;
+	_futureLocation = _location;
 	this->_rotation = model._rotation;
 	this->_scale = model._scale;
+	_futureScale = _scale;
+
+	_changeLocation = false;
+	_changeRotation = false;
+	_changeScale = false;
+	
 }
 
 Model::~Model(void)
@@ -91,6 +107,13 @@ bool Model::InitModel( string modelName, string textureName )
 		return false;
 	}
 
+	result = InitVertexList();
+	if( !result )
+	{
+		MessageBox(NULL, "Error while initializing the model !",  "Game", MB_OK);
+		return false;
+	}
+
 	// init the texture
 	_texture = textureName;
 
@@ -102,30 +125,38 @@ bool Model::InitModel( string modelName, string textureName )
 ////////////////
 void Model::SetLocation(Point3 newLoc)
 {
-	_location.x = newLoc.x;
-	_location.y = newLoc.y;
-	_location.z = newLoc.z;
+	_futureLocation.x = newLoc.x;
+	_futureLocation.y = newLoc.y;
+	_futureLocation.z = newLoc.z;
+
+	_changeLocation = true;
 }
 
 void Model::SetLocation(float x, float y, float z)
 {
-	_location.x = x;
-	_location.y = y;
-	_location.z = z;
+	_futureLocation.x = x;
+	_futureLocation.y = y;
+	_futureLocation.z = z;
+
+	_changeLocation = true;
 }
 
 void Model::Translate(Point3 newLoc)
 {
-	_location.x += newLoc.x;
-	_location.y += newLoc.y;
-	_location.z += newLoc.z;
+	_futureLocation.x += newLoc.x;
+	_futureLocation.y += newLoc.y;
+	_futureLocation.z += newLoc.z;
+
+	_changeLocation = true;
 }
 
 void Model::Translate(float x, float y, float z)
 {
-	_location.x += x;
-	_location.y += y;
-	_location.z += z;
+	_futureLocation.x += x;
+	_futureLocation.y += y;
+	_futureLocation.z += z;
+
+	_changeLocation = true;
 }
 
 ////////////////
@@ -136,6 +167,8 @@ void Model::SetRotation(Point3 axis, float angle)
 	this->_rotation.x = axis.x * angle;
 	this->_rotation.y = axis.y * angle;
 	this->_rotation.z = axis.z * angle;
+
+	_changeRotation = true;
 }
 
 void Model::SetRotation(float xAngle, float yAngle, float zAngle)
@@ -143,6 +176,8 @@ void Model::SetRotation(float xAngle, float yAngle, float zAngle)
 	this->_rotation.x = xAngle;
 	this->_rotation.y = yAngle;
 	this->_rotation.z = zAngle;
+
+	_changeRotation = true;
 }
 
 void Model::Rotate(Point3 axis, float angle)
@@ -150,6 +185,8 @@ void Model::Rotate(Point3 axis, float angle)
 	this->_rotation.x += axis.x * angle;
 	this->_rotation.y += axis.y * angle;
 	this->_rotation.z += axis.z * angle;
+
+	_changeRotation = true;
 }
 
 void Model::Rotate(float xAngle, float yAngle, float zAngle)
@@ -157,6 +194,8 @@ void Model::Rotate(float xAngle, float yAngle, float zAngle)
 	this->_rotation.x += xAngle;
 	this->_rotation.y += yAngle;
 	this->_rotation.z += zAngle;
+
+	_changeRotation = true;
 }
 
 /////////////
@@ -164,12 +203,16 @@ void Model::Rotate(float xAngle, float yAngle, float zAngle)
 /////////////
 void Model::SetScale(float scale)
 {
-	this->_scale = scale;
+	this->_futureScale = scale;
+
+	_changeScale = true;
 }
 
 void Model::Scale(float factor)
 {
-	this->_scale *= factor;
+	this->_futureScale *= factor;
+
+	_changeScale = true;
 }
 
 ///////////////
@@ -178,6 +221,110 @@ void Model::Scale(float factor)
 void Model::SetTexture(std::string newTex)
 {
 	_texture = newTex;
+}
+
+//////////////
+//  UPDATE  //
+//////////////
+void Model::Update()
+{
+	
+	if(_changeRotation)
+	{
+		_listVertex.clear();
+
+		for(int i = 1; i <= this->nbVertex; i++)
+		{
+			Point3 vertex = _vertex[i];
+				
+			float x, y, z;
+
+			// rotate x
+			float cos_X = cos( _rotation.x );
+			float sin_X = sin( _rotation.x );
+			y = vertex.y;
+			z = vertex.z;
+			vertex.y = y * cos_X - z * sin_X;
+			vertex.z = z * cos_X + y * sin_X;
+
+			// rotate y
+			float cos_Y = cos( _rotation.y );
+			float sin_Y = sin( _rotation.y );
+			x = vertex.x;
+			z = vertex.z;
+			vertex.z = z * cos_Y - x * sin_Y;
+			vertex.x = x * cos_Y + z * sin_Y;
+
+			// rotate z
+			float cos_Z = cos( _rotation.z );
+			float sin_Z = sin( _rotation.z );
+			x = vertex.x;
+			y = vertex.y;
+			vertex.x = x * cos_Z - y * sin_Z;
+			vertex.y = y * cos_Z + x * sin_Z;
+
+			// scale
+			vertex.x *= _scale;
+			vertex.y *= _scale;
+			vertex.z *= _scale;
+
+			// position
+			vertex.x += _futureLocation.x;
+			vertex.y += _futureLocation.y;
+			vertex.z += _futureLocation.z;
+
+			_listVertex[i] = vertex;
+		}
+	}
+	else if (_changeScale)
+	{
+
+		float diffScale = _futureScale;
+		if( _scale == 0 )
+			diffScale /= 0.0001f;
+		else
+			diffScale /= _scale;
+
+		for(int i = 1; i <= this->nbVertex; i++)
+		{
+			// position
+			_listVertex[i].x -= _location.x;
+			_listVertex[i].y -= _location.y;
+			_listVertex[i].z -= _location.z;
+
+			// scale
+			_listVertex[i].x *= diffScale;
+			_listVertex[i].y *= diffScale;
+			_listVertex[i].z *= diffScale;
+
+			// position
+			_listVertex[i].x += _futureLocation.x;
+			_listVertex[i].y += _futureLocation.y;
+			_listVertex[i].z += _futureLocation.z;
+		}
+	}
+	else if(_changeLocation)
+	{
+		Point3 diffLocation = _futureLocation;
+		diffLocation.x -= _location.x;
+		diffLocation.y -= _location.y;
+		diffLocation.z -= _location.z;
+
+		for(int i = 1; i <= this->nbVertex; i++)
+		{
+			// position
+			_listVertex[i].x += diffLocation.x;
+			_listVertex[i].y += diffLocation.y;
+			_listVertex[i].z += diffLocation.z;
+		}
+	}
+
+	_location = _futureLocation;
+	_scale = _futureScale;
+	_changeLocation = false;
+	_changeRotation = false;
+	_changeScale = false;
+
 }
 
 //////////////////
@@ -288,8 +435,8 @@ bool Model::LoadData()
 				fin >> x >> y;
 
 				Point2 pt2;
-				pt2.x = x;
-				pt2.y = y;
+				pt2.x = 1 - x;
+				pt2.y = 1 - y;
 
 				_textures[indexTexture] = pt2;
 				indexTexture++;
@@ -352,13 +499,10 @@ bool Model::LoadData()
 					int v, t;
 					fin >> v >> input >> t;
 
-					CUSTOM_VERTEX vertex;
-					vertex.x = _vertex[v].x;
-					vertex.y = _vertex[v].y;
-					vertex.z = -_vertex[v].z;
+					CUSTOM_VERTEX_DATA vertex;
+					vertex.vertexPosition = v;
 					vertex.COLOR = 0xffff00ff;
-					vertex.u = 1 - _textures[t].x;
-					vertex.v = 1 - _textures[t].y;
+					vertex.texturePosition = t;
 					face->AddVertex(vertex);
 
 					while(input != ' ' && input != '\n')
@@ -391,4 +535,13 @@ bool Model::LoadData()
 
 	return true;
 
+}
+
+bool Model::InitVertexList()
+{
+	for(int i = 1; i <= this->nbVertex; i++)
+	{
+		_listVertex[i] = _vertex[i];
+	}
+	return true;
 }

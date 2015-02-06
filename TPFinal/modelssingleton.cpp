@@ -21,8 +21,7 @@ ModelsSingleton::ModelsSingleton(void)
 	_modelBook.InitModel( ".\\Resources\\LivreFerme.obj" , ".\\Resources\\LivreFermeRouge.png" );
 	
 
-	Model* m1 = new Model(_modelBook);
-	m1->SetTexture(".\\Resources\\LivreFermeRouge.png");
+	Model* m1 = new Model(_modelCube);
 	m1->Translate(0.0f, 1.0f, -1.0f);
 	_models.push_back(m1);
 

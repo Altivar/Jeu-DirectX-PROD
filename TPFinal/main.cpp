@@ -22,7 +22,7 @@ LPDIRECT3DVERTEXBUFFER9 g_pVB = NULL;
 LPDIRECT3DTEXTURE9 g_pTexture = NULL;
 FLOAT texture_size = 1.0f;
 const int vertexCountInBuffer = 6000;
-float factor = 1.0f;
+
 
 //////////////////////
 //  INIT DIRECT 3D  //
@@ -95,61 +95,34 @@ HRESULT InitVertexBuffer()
 		 it1++)
 	{
 
+		(*it1)->Update();
+
 		std::map<int, Face*>::iterator it2 = (*it1)->_faces.begin();
 		
 		for( it2; it2 != (*it1)->_faces.end(); it2++)
 		{
+			if( indexOfVertex >= vertexCountInBuffer )
+				return E_FAIL;
 			
+
 			for(int i = 0; i < (*it2).second->_nbVertex; i++)
 			{
 				if( indexOfVertex >= vertexCountInBuffer )
-				return E_FAIL;
-				sommets[indexOfVertex] = (*it2).second->_vertexTable[i];
+					return E_FAIL;
 				
-				float x, y, z;
+				int vPos = (*it2).second->_vertexTable[i].vertexPosition;
+				int tPos = (*it2).second->_vertexTable[i].texturePosition;
 
-				// rotate x
-				float cos_X = cos( (*it1)->_rotation.x );
-				float sin_X = sin( (*it1)->_rotation.x );
-				y = sommets[indexOfVertex].y;
-				z = sommets[indexOfVertex].z;
-				sommets[indexOfVertex].y = y * cos_X - z * sin_X;
-				sommets[indexOfVertex].z = z * cos_X + y * sin_X;
-
-				// rotate y
-				float cos_Y = cos( (*it1)->_rotation.y );
-				float sin_Y = sin( (*it1)->_rotation.y );
-				x = sommets[indexOfVertex].x;
-				z = sommets[indexOfVertex].z;
-				sommets[indexOfVertex].z = z * cos_Y - x * sin_Y;
-				sommets[indexOfVertex].x = x * cos_Y + z * sin_Y;
-
-				// rotate z
-				float cos_Z = cos( (*it1)->_rotation.z );
-				float sin_Z = sin( (*it1)->_rotation.z );
-				x = sommets[indexOfVertex].x;
-				y = sommets[indexOfVertex].y;
-				sommets[indexOfVertex].x = x * cos_Z - y * sin_Z;
-				sommets[indexOfVertex].y = y * cos_Z + x * sin_Z;
-
-
-				// scale
-				sommets[indexOfVertex].x *= (*it1)->_scale;
-				sommets[indexOfVertex].y *= (*it1)->_scale;
-				sommets[indexOfVertex].z *= (*it1)->_scale;
-
-				// position
-				sommets[indexOfVertex].x += (*it1)->_location.x;
-				sommets[indexOfVertex].y += (*it1)->_location.y;
-				sommets[indexOfVertex].z += (*it1)->_location.z;
-
+				sommets[indexOfVertex].COLOR = (*it2).second->_vertexTable[i].COLOR;
+				sommets[indexOfVertex].u = (*it1)->_textures[tPos].x;
+				sommets[indexOfVertex].v = (*it1)->_textures[tPos].y;
+				sommets[indexOfVertex].x = (*it1)->_listVertex[vPos].x;
+				sommets[indexOfVertex].y = (*it1)->_listVertex[vPos].y;
+				sommets[indexOfVertex].z = (*it1)->_listVertex[vPos].z;
 				
 				indexOfVertex++;
 			}
-			
-			
 		}
-
 	}
 
 	// release the buffer
@@ -266,20 +239,10 @@ void Update()
 	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
 	for(it1; it1 != ModelsSingleton::Instance()._models.end(); it1++)
 	{
-		//(*it1)->Translate(0, 0, -0.01f);
-		//(*it1)->Scale(0.99f);
+		//(*it1)->Translate(0, 0, 0.2);
+		//(*it1)->Scale(1.1f);
 		(*it1)->Rotate(0.05f, 0.00f, 0.00f);
 	}
-
-	if(GetAsyncKeyState(VK_LEFT))
-	{
-		factor -= 0.1f;
-	}
-	if(GetAsyncKeyState(VK_RIGHT))
-	{
-		factor += 0.1f;
-	}
-
 }
 
 //////////////

@@ -17,10 +17,10 @@ struct Face
 			delete[] _vertexTable;
 	}
 	
-	void AddVertex(const CUSTOM_VERTEX& vert)
+	void AddVertex(const CUSTOM_VERTEX_DATA& vert)
 	{
 
-		CUSTOM_VERTEX* tempTable = new CUSTOM_VERTEX[_nbVertex+1];
+		CUSTOM_VERTEX_DATA* tempTable = new CUSTOM_VERTEX_DATA[_nbVertex+1];
 		for(int i = 0; i < _nbVertex; i++)
 		{
 			tempTable[i] = _vertexTable[i];
@@ -35,6 +35,6 @@ struct Face
 	}
 
 	int _nbVertex;
-	CUSTOM_VERTEX* _vertexTable;
+	CUSTOM_VERTEX_DATA* _vertexTable;
 
 };
