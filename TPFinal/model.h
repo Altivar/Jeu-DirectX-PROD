@@ -4,6 +4,7 @@
 using namespace std;
 
 #include "face.h"
+#include "modelcomponent.h"
 #include <map>
 #include <list>
 
@@ -57,6 +58,10 @@ struct Model
 	float _scale;
 	float _futureScale;
 	bool _changeScale;
+
+	// Components
+	void AddComponent(ModelComponent* component);
+	std::list<ModelComponent*> _components;
 
 private :
 	bool ReadFileCounts();

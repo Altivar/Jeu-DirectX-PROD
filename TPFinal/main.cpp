@@ -239,9 +239,13 @@ void Update()
 	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
 	for(it1; it1 != ModelsSingleton::Instance()._models.end(); it1++)
 	{
-		//(*it1)->Translate(0, 0, 0.2);
-		//(*it1)->Scale(1.1f);
-		(*it1)->Rotate(0.05f, 0.00f, 0.00f);
+		
+		std::list<ModelComponent*>::iterator it2 = (*it1)->_components.begin();
+		for(it2; it2 != (*it1)->_components.end(); it2++)
+		{
+			(*it2)->Action();
+		}
+
 	}
 }
 

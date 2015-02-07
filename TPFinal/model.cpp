@@ -20,6 +20,7 @@ Model::Model(void)
 	_changeRotation = false;
 	_changeScale = false;
 	_listVertex.clear();
+	_components.clear();
 }
 
 Model::Model(const Model& model)
@@ -56,6 +57,8 @@ Model::Model(const Model& model)
 	this->_listVertex.clear();
 	this->_listVertex = model._listVertex;
 
+	this->_components.clear();
+
 	this->_texture = model._texture;
 	this->_name = model._name;
 	
@@ -68,7 +71,7 @@ Model::Model(const Model& model)
 	_changeLocation = false;
 	_changeRotation = false;
 	_changeScale = false;
-	
+
 }
 
 Model::~Model(void)
@@ -78,6 +81,13 @@ Model::~Model(void)
 	{
 		delete (*it).second;
 		it = _faces.erase(it);
+	}
+
+	std::list<ModelComponent*>::iterator it2 = _components.begin();
+	while (it2 != _components.end())
+	{
+		delete (*it2);
+		it2 = _components.erase(it2);
 	}
 }
 
@@ -325,6 +335,17 @@ void Model::Update()
 	_changeRotation = false;
 	_changeScale = false;
 
+}
+
+//////////////////
+//  COMPONENTS  //
+//////////////////
+void Model::AddComponent(ModelComponent* component)
+{
+	if( component == NULL )
+		return;
+
+	_components.push_back(component);
 }
 
 //////////////////

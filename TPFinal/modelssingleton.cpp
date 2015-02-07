@@ -1,4 +1,5 @@
 #include "modelssingleton.h"
+#include "scripts.h"
 
 // memory leaks
 #include <crtdbg.h>
@@ -23,14 +24,15 @@ ModelsSingleton::ModelsSingleton(void)
 
 	Model* m1 = new Model(_modelCube);
 	m1->Translate(0.0f, 1.0f, -1.0f);
+	m1->AddComponent(new PlayerScript(m1));
 	_models.push_back(m1);
 
-	/*Model* m2 = new Model(_modelCube);
-	m2->SetTexture(".\\Resources\\diamond_ore.png");
-	m2->Translate(0, 3, 0);
+	Model* m2 = new Model(_modelCube);
+	m2->SetTexture(".\\Resources\\stonebrick_mossy.png");
+	m2->AddComponent(new TestScript(m2));
 	_models.push_back(m2);
 
-	Model* m3 = new Model(_modelTorus);
+	/*Model* m3 = new Model(_modelTorus);
 	m3->SetTexture(".\\Resources\\stonebrick_mossy.png");
 	m3->Translate(0, 0, 1);
 	_models.push_back(m3);
