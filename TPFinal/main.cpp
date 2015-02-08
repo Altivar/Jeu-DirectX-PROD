@@ -23,6 +23,8 @@ LPDIRECT3DTEXTURE9 g_pTexture = NULL;
 FLOAT texture_size = 1.0f;
 const int vertexCountInBuffer = 6000;
 
+// for the deltatime
+UINT formerTime = timeGetTime();
 
 //////////////////////
 //  INIT DIRECT 3D  //
@@ -236,6 +238,14 @@ void MatrixSettings()
 // called at each frame before Render
 void Update()
 {
+	// make the args for the update
+	UINT time = timeGetTime();
+	float deltaTime = (float)(time - formerTime);
+	deltaTime /= 1000.0f;
+	UpdateArgs args(deltaTime);
+	// update the formerTime for the next frame
+	formerTime = time;
+
 	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
 	for(it1; it1 != ModelsSingleton::Instance()._models.end(); it1++)
 	{
@@ -243,7 +253,7 @@ void Update()
 		std::list<ModelComponent*>::iterator it2 = (*it1)->_components.begin();
 		for(it2; it2 != (*it1)->_components.end(); it2++)
 		{
-			(*it2)->Action();
+			(*it2)->Action(args);
 		}
 
 	}

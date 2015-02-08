@@ -1,14 +1,15 @@
 #include "scripts.h"
 #include "model.h"
 
+#define PI 3.141592f
 
 /////////////////////
 //  PLAYER SCRIPT  //
 /////////////////////
-void PlayerScript::Action()
+void PlayerScript::Action(UpdateArgs& args)
 {
-	ScriptComponent::Action();
-	_baseModel->Translate(0, 0, 0.1f);
+	ScriptComponent::Action(args);
+	_baseModel->Translate(0, 0, 5.0f * args.GetDeltaTime() );
 }
 
 
@@ -20,9 +21,9 @@ void TestScript::Start()
 	_baseModel->SetLocation(2.0f, 0, 0);
 }
 
-void TestScript::Action()
+void TestScript::Action(UpdateArgs& args)
 {
-	ScriptComponent::Action();
-	_baseModel->Rotate(0, 0.01f, 0);
+	ScriptComponent::Action(args);
+	_baseModel->Rotate(0, PI * args.GetDeltaTime(), 0);
 }
 

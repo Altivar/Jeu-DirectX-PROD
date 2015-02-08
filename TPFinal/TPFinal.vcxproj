@@ -63,6 +63,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="args.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="modelcomponent.cpp" />
@@ -70,6 +71,7 @@
     <ClCompile Include="scripts.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="args.h" />
     <ClInclude Include="custom_vertex.h" />
     <ClInclude Include="face.h" />
     <ClInclude Include="Model.h" />

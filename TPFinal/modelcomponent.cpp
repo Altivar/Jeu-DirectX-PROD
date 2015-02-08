@@ -36,7 +36,7 @@ void ScriptComponent::Start()
 {
 }
 
-void ScriptComponent::Action()
+void ScriptComponent::Action(UpdateArgs& args)
 {
 	if( !this->_hasStarted )
 	{
@@ -49,7 +49,7 @@ void ScriptComponent::End()
 {
 }
 
-void ScriptComponent::OnCollisionEnter()
+void ScriptComponent::OnCollisionEnter(CollisionArgs args)
 {
 }
 

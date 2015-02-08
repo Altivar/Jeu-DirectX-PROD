@@ -1,4 +1,6 @@
 #pragma once
+#include "args.h"
+
 
 struct Model;
 
@@ -10,7 +12,7 @@ class ModelComponent
 
 public:
 	ModelComponent(Model* model);
-	virtual void Action() = 0;
+	virtual void Action(UpdateArgs& args) = 0;
 
 protected:
 	Model* _baseModel;
@@ -27,14 +29,14 @@ class ScriptComponent : public ModelComponent
 public:
 	ScriptComponent(Model* model);
 	~ScriptComponent(void);
-	virtual void Action() = 0;
+	virtual void Action(UpdateArgs& args) = 0;
 
 protected:
 	bool _hasStarted;
 
 	virtual void Start();
 	virtual void End();
-	virtual void OnCollisionEnter();
+	virtual void OnCollisionEnter(CollisionArgs args);
 
 };
 
