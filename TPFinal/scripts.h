@@ -23,3 +23,10 @@ public:
 	virtual void Action(UpdateArgs& args);
 	virtual void Start();
 };
+class TestScript2 : public ScriptComponent
+{
+public:
+	TestScript2(Model* model) : ScriptComponent(model){}
+	virtual void Action(UpdateArgs& args);
+	virtual void Start();
+};
