@@ -41,6 +41,7 @@ void TestScript::Start()
 void TestScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
+	//_baseModel->Rotate(0, PI * args.GetDeltaTime(), 0);
 }
 
 void TestScript2::Start()

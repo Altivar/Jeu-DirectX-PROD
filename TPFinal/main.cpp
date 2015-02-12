@@ -4,6 +4,7 @@
 ////////////////
 #include "modelssingleton.h"
 #include <math.h>
+#include <sstream>
 
 // memory leaks
 #include <crtdbg.h>
@@ -25,6 +26,8 @@ const int vertexCountInBuffer = 6000;
 
 // for the deltatime
 UINT formerTime = timeGetTime();
+UINT timer = 0;
+int nbFrame = 0;
 
 //////////////////////
 //  INIT DIRECT 3D  //
@@ -241,10 +244,24 @@ void Update()
 	// make the args for the update
 	UINT time = timeGetTime();
 	float deltaTime = (float)(time - formerTime);
+	// update the timer
+	timer += (time - formerTime);
 	deltaTime /= 1000.0f;
 	UpdateArgs args(deltaTime);
 	// update the formerTime for the next frame
 	formerTime = time;
+
+	// if the timer is up to 1000
+	// restart from 0 and show the FPS
+	if( timer >= 1000 )
+	{
+		std::stringstream ss;
+		ss << "FPS : " << nbFrame << "\n";
+		std::string s = ss.str();
+		OutputDebugString(s.c_str());
+		timer -= 1000;
+		nbFrame = 0;
+	}
 
 	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
 	for(it1; it1 != ModelsSingleton::Instance()._models.end(); it1++)
@@ -256,8 +273,10 @@ void Update()
 		{
 			(*it2)->Action(args);
 		}
-
 	}
+
+	// increase the number of frame during this second
+	nbFrame++;
 }
 
 //////////////
