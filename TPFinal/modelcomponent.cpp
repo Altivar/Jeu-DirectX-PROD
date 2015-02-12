@@ -395,7 +395,7 @@ bool ColliderComponent::Lin2Tri_Intersect(Point3 T0, Point3 T1, Point3 T2, Point
 
 bool ColliderComponent::ResolveSystem(const Point3 &a0, const Point3 &a1, const Point3 &a2, Point3 &x, const Point3 &b)
 {
-	const float EPSILON = 1e-6;
+	const float EPSILON = 1e-6f;
 
 	// applique la methode de Cramer (pas efficace mais assez robuste)
 	float d = CalculateDeterminant(a0, a1, a2);

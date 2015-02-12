@@ -121,5 +121,5 @@ struct Point2
 	{
 		operator*=(1 / sqrt(x*x + y*y));
 	}
-
+	
 };
