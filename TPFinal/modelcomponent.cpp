@@ -1,6 +1,7 @@
 #include "modelcomponent.h"
 #include "model.h"
 #include "modelssingleton.h"
+#include <sstream>
 
 // memory leaks
 #include <crtdbg.h>
@@ -51,7 +52,7 @@ void ScriptComponent::End()
 {
 }
 
-void ScriptComponent::OnCollisionEnter(CollisionArgs args)
+void ScriptComponent::Collide(EventArgs args)
 {
 }
 
@@ -94,18 +95,19 @@ void ColliderComponent::Action(UpdateArgs& args)
 		if( (*modelIt) == _baseModel )
 			continue;
 
+		if( !(*modelIt)->_hasBeenInitialized )
+			continue;
+
 		if( IsAABBColliding(*modelIt) )
 		{
 			if( AreModelsColliding(*modelIt) )
 			{
-				(*modelIt)->SetTexture(".\\Resources\\redstone_block.png");
-				return;
+				std::stringstream ss;
+				ss << "__COLLISION__" << _baseModel->_modelNum;
+				std::string eventname = ss.str();
+
+				EventManager::Instance().FireEvent(eventname);
 			}
-			(*modelIt)->SetTexture(".\\Resources\\diamond_ore.png");
-		}
-		else
-		{
-			(*modelIt)->SetTexture(".\\Resources\\diamond_ore.png");
 		}
 	}
 

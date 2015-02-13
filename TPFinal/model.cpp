@@ -1,5 +1,7 @@
 #include "Model.h"
+#include "eventmanager.h"
 #include <fstream>
+#include <sstream>
 
 // memory leaks
 #include <crtdbg.h>
@@ -21,6 +23,8 @@ Model::Model(void)
 	_changeScale = false;
 	_listVertex.clear();
 	_components.clear();
+	_modelNum = -1;
+	_hasBeenInitialized = false;
 }
 
 Model::Model(const Model& model)
@@ -72,6 +76,8 @@ Model::Model(const Model& model)
 	_changeRotation = false;
 	_changeScale = false;
 
+	_modelNum = -1;
+	_hasBeenInitialized = false;
 }
 
 Model::~Model(void)
@@ -172,6 +178,15 @@ void Model::Translate(float x, float y, float z)
 ////////////////
 //  ROTATION  //
 ////////////////
+void Model::SetRotation(Point3 rotation)
+{
+	this->_rotation.x = rotation.x;
+	this->_rotation.y = rotation.y;
+	this->_rotation.z = rotation.z;
+
+	_changeRotation = true;
+}
+
 void Model::SetRotation(Point3 axis, float angle)
 {
 	this->_rotation.x = axis.x * angle;
@@ -344,6 +359,19 @@ void Model::AddComponent(ModelComponent* component)
 {
 	if( component == NULL )
 		return;
+
+	// if the new component is a script
+	// attach it to the event manager (for the collision)
+	if( ScriptComponent* script = dynamic_cast<ScriptComponent*>(component) )
+	{
+
+		std::stringstream ss;
+		ss << "__COLLISION__" << this->_modelNum;
+		std::string eventname = ss.str();
+
+		EventManager::Instance().RegisterEvent( eventname , std::bind(&ScriptComponent::Collide, script, std::placeholders::_1));
+	}
+
 
 	_components.push_back(component);
 }

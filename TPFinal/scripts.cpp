@@ -29,6 +29,11 @@ void PlayerScript::Action(UpdateArgs& args)
 	}
 }
 
+void PlayerScript::Collide(EventArgs args)
+{
+	_baseModel->SetTexture(".\\Resources\\redstone_block.png");
+}
+
 
 /////////////////////
 //  PLAYER SCRIPT  //
@@ -36,7 +41,7 @@ void PlayerScript::Action(UpdateArgs& args)
 void TestScript::Start()
 {
 	_baseModel->SetScale(5.0f);
-	_baseModel->Translate(3.0, 0, 0.5f);
+	//_baseModel->Translate(3.0, 0, 0.5f);
 }
 void TestScript::Action(UpdateArgs& args)
 {
@@ -46,7 +51,7 @@ void TestScript::Action(UpdateArgs& args)
 
 void TestScript2::Start()
 {
-	_baseModel->SetLocation(-3.0f, 0, 0);
+	//_baseModel->SetLocation(-3.0f, 0, 0);
 }
 void TestScript2::Action(UpdateArgs& args)
 {

@@ -1,6 +1,7 @@
 #pragma once
 #include "args.h"
 #include <list>
+#include "eventmanager.h"
 
 
 struct Model;
@@ -27,18 +28,17 @@ protected:
 //////////////////////////////
 class ScriptComponent : public ModelComponent
 {
-
 public:
 	ScriptComponent(Model* model);
 	~ScriptComponent(void);
 	virtual void Action(UpdateArgs& args) = 0;
+	virtual void Collide(EventArgs args);
 
 protected:
 	bool _hasStarted;
 
 	virtual void Start();
 	virtual void End();
-	virtual void OnCollisionEnter(CollisionArgs args);
 
 };
 

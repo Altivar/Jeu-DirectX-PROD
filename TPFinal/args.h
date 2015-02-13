@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 
 ///////////////////
 //  UPDATE ARGS  //
@@ -17,11 +17,14 @@ private:
 };
 
 
-//////////////////////
-//  COLLISION ARGS  //
-//////////////////////
-class CollisionArgs
+//////////////////
+//  EVENT ARGS  //
+//////////////////
+class EventArgs
 {
 public:
-	CollisionArgs();
+	int intArgs;
+	float floatArgs;
+	std::string strArgs;
+	//Peut etre rajouter un Point3 ?
 };

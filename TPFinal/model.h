@@ -16,6 +16,11 @@ struct Model
 	~Model(void);
 	bool InitModel( string modelName, string textureName );
 
+	// number of the model
+	int _modelNum;
+	// if the model has been initialized (avoiding risk of fake collision)
+	bool _hasBeenInitialized;
+
 	std::map<int, Face*> _faces;
 	int nbFace;
 
@@ -45,6 +50,7 @@ struct Model
 	bool _changeLocation;
 
 	// Rotation
+	void SetRotation(Point3 rotation);
 	void SetRotation(Point3 axis, float angle);
 	void SetRotation(float xAngle, float yAngle, float zAngle);
 	void Rotate(Point3 axis, float angle);

@@ -266,13 +266,12 @@ void Update()
 	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
 	for(it1; it1 != ModelsSingleton::Instance()._models.end(); it1++)
 	{
-		if( (*it1)->_components.empty() )
-			continue;
 		std::list<ModelComponent*>::iterator it2 = (*it1)->_components.begin();
 		for(it2; it2 != (*it1)->_components.end(); it2++)
 		{
 			(*it2)->Action(args);
 		}
+		(*it1)->_hasBeenInitialized = true;
 	}
 
 	// increase the number of frame during this second

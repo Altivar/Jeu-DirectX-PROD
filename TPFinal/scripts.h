@@ -11,6 +11,7 @@ class PlayerScript : public ScriptComponent
 public:
 	PlayerScript(Model* model) : ScriptComponent(model){}
 	virtual void Action(UpdateArgs& args);
+	virtual void Collide(EventArgs args);
 };
 
 ///////////////////

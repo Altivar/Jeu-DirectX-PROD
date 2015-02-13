@@ -67,6 +67,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="args.cpp" />
+    <ClCompile Include="eventmanager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="modelcomponent.cpp" />
@@ -76,6 +77,7 @@
   <ItemGroup>
     <ClInclude Include="args.h" />
     <ClInclude Include="custom_vertex.h" />
+    <ClInclude Include="eventmanager.h" />
     <ClInclude Include="face.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="modelcomponent.h" />

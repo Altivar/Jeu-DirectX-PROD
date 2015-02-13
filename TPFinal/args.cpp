@@ -14,10 +14,3 @@ float UpdateArgs::GetDeltaTime()
 	return _deltaTime;
 }
 
-
-//////////////////////
-//  COLLISION ARGS  //
-//////////////////////
-CollisionArgs::CollisionArgs()
-{
-}
