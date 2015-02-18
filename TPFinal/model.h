@@ -62,7 +62,6 @@ struct Model
 	void SetScale(float scale);
 	void Scale(float factor);
 	float _scale;
-	float _futureScale;
 	bool _changeScale;
 
 	// Components

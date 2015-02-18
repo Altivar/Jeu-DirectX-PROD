@@ -7,7 +7,7 @@
   #define new new( _CLIENT_BLOCK, __FILE__, __LINE__)
 #endif // _DEBUG
 
-EventManager EventManager::_instance = EventManager();
+EventManager* EventManager::_instance = NULL;
 
 EventManager::EventManager(void)
 {
@@ -19,9 +19,17 @@ EventManager::~EventManager(void)
 
 }
 
-EventManager& EventManager::Instance()
+EventManager* EventManager::Instance()
 {
+	if( _instance == NULL )
+		_instance = new EventManager();
 	return _instance;
+}
+
+void EventManager::ReleaseInstance()
+{
+	delete _instance;
+	_instance = NULL;
 }
 
 void EventManager::FireEvent(std::string eventName, EventArgs args)

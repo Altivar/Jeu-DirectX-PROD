@@ -13,11 +13,17 @@ float PI = 3.141592f;
 
 Model::Model(void)
 {
-	SetLocation(0,0,0);
+	//SetLocation(0,0,0);
+	_location = Point3(0,0,0);
+
 	_futureLocation = _location;
-	SetRotation(0,0,0);
-	SetScale(1);
+	
+	//SetRotation(0,0,0);
+	_rotation = Point3(0,0,0);
+
+	//SetScale(1.0f);
 	_scale = 1.0f;
+	
 	_changeLocation = false;
 	_changeRotation = false;
 	_changeScale = false;
@@ -70,7 +76,7 @@ Model::Model(const Model& model)
 	_futureLocation = _location;
 	this->_rotation = model._rotation;
 	this->_scale = model._scale;
-	_futureScale = _scale;
+	//_futureScale = _scale;
 
 	_changeLocation = false;
 	_changeRotation = false;
@@ -228,14 +234,14 @@ void Model::Rotate(float xAngle, float yAngle, float zAngle)
 /////////////
 void Model::SetScale(float scale)
 {
-	this->_futureScale = scale;
+	this->_scale = scale;
 
 	_changeScale = true;
 }
 
 void Model::Scale(float factor)
 {
-	this->_futureScale *= factor;
+	this->_scale *= factor;
 
 	_changeScale = true;
 }
@@ -254,7 +260,7 @@ void Model::SetTexture(std::string newTex)
 void Model::Update()
 {
 	
-	if(_changeRotation)
+	if(_changeRotation || _changeScale)
 	{
 		_listVertex.clear();
 
@@ -301,9 +307,10 @@ void Model::Update()
 			_listVertex[i] = vertex;
 		}
 	}
-	else if (_changeScale)
+	/*else if (_changeScale)
 	{
-
+		if( _futureScale < 0.1f )
+			_futureScale = 0.1f;
 		float diffScale = _futureScale;
 		if( _scale == 0 )
 			diffScale /= 0.0001f;
@@ -327,7 +334,7 @@ void Model::Update()
 			_listVertex[i].y += _futureLocation.y;
 			_listVertex[i].z += _futureLocation.z;
 		}
-	}
+	}*/
 	else if(_changeLocation)
 	{
 		Point3 diffLocation = _futureLocation;
@@ -345,11 +352,12 @@ void Model::Update()
 	}
 
 	_location = _futureLocation;
-	_scale = _futureScale;
+	//_scale = _futureScale;
 	_changeLocation = false;
 	_changeRotation = false;
 	_changeScale = false;
 
+	_hasBeenInitialized = true;
 }
 
 //////////////////
@@ -369,7 +377,7 @@ void Model::AddComponent(ModelComponent* component)
 		ss << "__COLLISION__" << this->_modelNum;
 		std::string eventname = ss.str();
 
-		EventManager::Instance().RegisterEvent( eventname , std::bind(&ScriptComponent::Collide, script, std::placeholders::_1));
+		EventManager::Instance()->RegisterEvent( eventname , std::bind(&ScriptComponent::Collide, script, std::placeholders::_1));
 	}
 
 

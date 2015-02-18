@@ -10,7 +10,9 @@ class EventManager
 {
 public:
 	//Methods
-	static EventManager& Instance();
+	static EventManager* Instance();
+	static void ReleaseInstance();
+
 	void RegisterEvent(std::string eventName, std::function<void(EventArgs)> funct);
 	void UnregisterEvent(std::string eventName, std::function<void(EventArgs)> funct);
 	void FireEvent(std::string eventName, EventArgs args);
@@ -22,6 +24,6 @@ private:
 
 	std::multimap<std::string, std::function<void(EventArgs)>> _eventsMap;
 
-	static EventManager _instance;
+	static EventManager* _instance;
 };
 

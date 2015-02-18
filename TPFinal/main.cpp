@@ -81,6 +81,11 @@ void OnWindowClosed()
 		g_pd3dDevice->Release();
 	if( g_pD3D != NULL )
 		g_pD3D->Release();
+
+	// release singletons
+	EventManager::ReleaseInstance();
+	ModelsSingleton::ReleaseInstance();
+
 }
 
 
@@ -94,9 +99,9 @@ HRESULT InitVertexBuffer()
 	CUSTOM_VERTEX sommets[vertexCountInBuffer];
 	int indexOfVertex = 0;
 
-	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
-	for( it1 = ModelsSingleton::Instance()._models.begin();
-		 it1 != ModelsSingleton::Instance()._models.end();
+	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()->_models.begin();
+	for( it1 = ModelsSingleton::Instance()->_models.begin();
+		 it1 != ModelsSingleton::Instance()->_models.end();
 		 it1++)
 	{
 
@@ -263,15 +268,14 @@ void Update()
 		nbFrame = 0;
 	}
 
-	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
-	for(it1; it1 != ModelsSingleton::Instance()._models.end(); it1++)
+	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()->_models.begin();
+	for(it1; it1 != ModelsSingleton::Instance()->_models.end(); it1++)
 	{
 		std::list<ModelComponent*>::iterator it2 = (*it1)->_components.begin();
 		for(it2; it2 != (*it1)->_components.end(); it2++)
 		{
 			(*it2)->Action(args);
 		}
-		(*it1)->_hasBeenInitialized = true;
 	}
 
 	// increase the number of frame during this second
@@ -309,9 +313,9 @@ void Render()
 		// draw vertex of vertexbuffer
 	int numberOfVertexDrawn = 0;
 
-	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()._models.begin();
-	for( it1 = ModelsSingleton::Instance()._models.begin();
-		 it1 != ModelsSingleton::Instance()._models.end();
+	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()->_models.begin();
+	for( it1 = ModelsSingleton::Instance()->_models.begin();
+		 it1 != ModelsSingleton::Instance()->_models.end();
 		 it1++)
 	{
 

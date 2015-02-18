@@ -7,7 +7,7 @@
   #define new new( _CLIENT_BLOCK, __FILE__, __LINE__)
 #endif // _DEBUG
 
-ModelsSingleton ModelsSingleton::_instance = ModelsSingleton();
+ModelsSingleton* ModelsSingleton::_instance = NULL;
 
 ModelsSingleton::ModelsSingleton(void)
 {
@@ -29,8 +29,8 @@ ModelsSingleton::ModelsSingleton(void)
 	m1->AddComponent(new PlayerScript(m1));
 
 	Model* m2 = Instanciate(Torus);
+	m2->AddComponent(new ObstacleScript(m2));
 	m2->SetTexture(".\\Resources\\stonebrick_mossy.png");
-	m2->AddComponent(new TestScript(m2));
 
 }
 
@@ -45,9 +45,17 @@ ModelsSingleton::~ModelsSingleton(void)
 	}
 }
 
-ModelsSingleton& ModelsSingleton::Instance()
+ModelsSingleton* ModelsSingleton::Instance()
 {
+	if( _instance == NULL )
+		_instance = new ModelsSingleton();
 	return _instance;
+}
+
+void ModelsSingleton::ReleaseInstance()
+{
+	delete _instance;
+	_instance = NULL;
 }
 
 Model* ModelsSingleton::Instanciate(ModelName modelName)
@@ -79,6 +87,7 @@ Model* ModelsSingleton::Instanciate(ModelName modelName)
 	if( model == NULL )
 		return NULL;
 
+	model->_modelNum = _modelsCount;
 	_models.push_back(model);
 
 	_modelsCount++;
@@ -119,6 +128,7 @@ Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3
 	model->SetLocation(position);
 	model->SetRotation(rotation);
 
+	model->_modelNum = _modelsCount;
 	_models.push_back(model);
 
 	_modelsCount++;

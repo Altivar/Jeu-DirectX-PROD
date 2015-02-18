@@ -14,6 +14,19 @@ public:
 	virtual void Collide(EventArgs args);
 };
 
+///////////////////////
+//  OBSTACLE SCRIPT  //
+///////////////////////
+class ObstacleScript : public ScriptComponent
+{
+private:
+	virtual void Start();
+public:
+	ObstacleScript(Model* model) : ScriptComponent(model){}
+	virtual void Action(UpdateArgs& args);
+};
+
+
 ///////////////////
 //  TEST SCRIPT  //
 ///////////////////

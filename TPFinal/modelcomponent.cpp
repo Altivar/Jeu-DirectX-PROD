@@ -89,8 +89,8 @@ void ColliderComponent::Action(UpdateArgs& args)
 	
 	RegisterAABB();
 
-	std::list<Model*>::iterator modelIt = ModelsSingleton::Instance()._models.begin();
-	for( modelIt; modelIt != ModelsSingleton::Instance()._models.end(); modelIt++ )
+	std::list<Model*>::iterator modelIt = ModelsSingleton::Instance()->_models.begin();
+	for( modelIt; modelIt != ModelsSingleton::Instance()->_models.end(); modelIt++ )
 	{
 		if( (*modelIt) == _baseModel )
 			continue;
@@ -106,7 +106,7 @@ void ColliderComponent::Action(UpdateArgs& args)
 				ss << "__COLLISION__" << _baseModel->_modelNum;
 				std::string eventname = ss.str();
 
-				EventManager::Instance().FireEvent(eventname);
+				EventManager::Instance()->FireEvent(eventname);
 			}
 		}
 	}

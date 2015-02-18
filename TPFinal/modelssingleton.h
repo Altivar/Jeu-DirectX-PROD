@@ -17,7 +17,9 @@ enum ModelName
 class ModelsSingleton
 {
 public:
-	static ModelsSingleton& Instance();
+	static ModelsSingleton* Instance();
+	static void ReleaseInstance();
+
 	std::list<Model*> _models;
 
 	// models count from beginning of the app
@@ -32,7 +34,7 @@ private:
 	ModelsSingleton(void);
 	~ModelsSingleton(void);
 
-	static ModelsSingleton _instance;
+	static ModelsSingleton* _instance;
 
 	// add model to the render list
 	Model* Instanciate(ModelName modelName);

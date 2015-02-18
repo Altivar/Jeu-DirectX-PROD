@@ -1,5 +1,6 @@
 #include "scripts.h"
 #include "model.h"
+#include <ctime>
 
 #define PI 3.141592f
 
@@ -9,7 +10,6 @@
 void PlayerScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
-	//_baseModel->Translate(0, 0, 5.0f * args.GetDeltaTime() );
 
 	if(GetAsyncKeyState(VK_LEFT))
 	{
@@ -35,18 +35,43 @@ void PlayerScript::Collide(EventArgs args)
 }
 
 
-/////////////////////
-//  PLAYER SCRIPT  //
-/////////////////////
+///////////////////////
+//  OBSTACLE SCRIPT  //
+///////////////////////
+void ObstacleScript::Start()
+{
+	
+	// random X position [-3;3]
+	std::srand((int)std::time(0));
+	float randStartPosition = (float)(std::rand() % 600);
+	randStartPosition -= 300;
+	randStartPosition /= 100;
+
+	_baseModel->SetLocation(randStartPosition, 0.0f, 10.0f);
+
+}
+
+void ObstacleScript::Action(UpdateArgs& args)
+{
+	ScriptComponent::Action(args);
+
+	_baseModel->Translate(0, 0, -3.0f * args.GetDeltaTime() );
+}
+
+
+
+
+///////////////////
+//  TEST SCRIPT  //
+///////////////////
 void TestScript::Start()
 {
-	_baseModel->SetScale(5.0f);
-	//_baseModel->Translate(3.0, 0, 0.5f);
+	_baseModel->SetScale(4.8f);
 }
 void TestScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
-	//_baseModel->Rotate(0, PI * args.GetDeltaTime(), 0);
+	_baseModel->Rotate(0.0f, PI*args.GetDeltaTime(), 0.0f);
 }
 
 void TestScript2::Start()
