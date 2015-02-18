@@ -21,6 +21,7 @@ class ObstacleScript : public ScriptComponent
 {
 private:
 	virtual void Start();
+	bool isDestroyed;
 public:
 	ObstacleScript(Model* model) : ScriptComponent(model){}
 	virtual void Action(UpdateArgs& args);

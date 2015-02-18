@@ -1,6 +1,7 @@
 #include "gamemanager.h"
 #include "modelssingleton.h"
 #include "scripts.h"
+#include <ctime>
 
 
 // memory leaks
@@ -15,9 +16,12 @@ GameManager* GameManager::_instance = NULL;
 
 GameManager::GameManager(void)
 {
+	// init random 
+	std::srand((int)time(0));
+	
 	_timer = 0.0f;
-	_timeBetweenObstacles = 3.0f;
-	_obstacleSpeed = 2.0f;
+	_timeBetweenObstacles = 2.0f;
+	_obstacleSpeed = 3.0f;
 	_score = 0;
 }
 
@@ -48,7 +52,10 @@ void GameManager::UpdateGame(UpdateArgs args)
 {
 
 	_timer += args.GetDeltaTime();
-	if( _timer >= _timeBetweenObstacles )
+	float timeToWait = _timeBetweenObstacles - (_score / 500.0f)*0.1f;
+	if( timeToWait < 1.0f )
+		timeToWait = 1.0f;
+	if( _timer >= timeToWait )
 	{
 		Model* model = ModelsSingleton::Instance()->Instanciate(Torus);
 		model->AddComponent(new ObstacleScript(model));
@@ -63,8 +70,6 @@ void GameManager::ObstaclePassed()
 	int pointsGained = (int)(_obstacleSpeed * 10.0f);
 	_score += pointsGained;
 
-	_obstacleSpeed += 0.3f;
-	_timeBetweenObstacles += 0.05f;
-
+	_obstacleSpeed += 0.2f;
 }
 

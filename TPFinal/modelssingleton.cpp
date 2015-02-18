@@ -10,7 +10,7 @@
 ModelsSingleton* ModelsSingleton::_instance = NULL;
 
 ModelsSingleton::ModelsSingleton(void)
-{
+{	
 	_modelsCount = 0;
 	
 	_models.clear();
@@ -42,10 +42,10 @@ ModelsSingleton::~ModelsSingleton(void)
 		delete (*it);
 		it = _models.erase(it);
 	}
-	it = _modelsToRemove.begin();
-	while (it != _modelsToRemove.end())
+	std::map<Model*, float>::iterator it2 = _modelsToRemove.begin();
+	while (it2 != _modelsToRemove.end())
 	{
-		it = _modelsToRemove.erase(it);
+		it2 = _modelsToRemove.erase(it2);
 	}
 }
 
@@ -148,17 +148,28 @@ Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3
 
 void ModelsSingleton::Destroy(Model* model)
 {
-	_modelsToRemove.push_back(model);
+	_modelsToRemove[model] = 0.0f;
 }
 
-void ModelsSingleton::CleanListOfModels()
+void ModelsSingleton::Destroy(Model* model, float timer)
 {
-	std::list<Model*>::iterator it = _modelsToRemove.begin();
-	for( it; it != _modelsToRemove.end(); it++ )
+	_modelsToRemove[model] = timer;
+}
+
+void ModelsSingleton::CleanListOfModels(UpdateArgs args)
+{
+	std::map<Model*, float>::iterator it = _modelsToRemove.begin();
+	for( it; it != _modelsToRemove.end(); )
 	{
-		_models.remove(*it);
-		delete (*it);
-		it = _modelsToRemove.erase(it);
+		(*it).second -= args.GetDeltaTime();
+		if( (*it).second <= 0.0f )
+		{
+			_models.remove((*it).first);
+			delete (*it).first;
+			it = _modelsToRemove.erase(it);
+		}
+		else
+			it++;
 		if( _modelsToRemove.empty() )
 			return;
 	}

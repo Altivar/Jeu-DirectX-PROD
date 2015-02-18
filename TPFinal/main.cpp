@@ -290,7 +290,7 @@ void Update()
 		}
 	}
 
-	ModelsSingleton::Instance()->CleanListOfModels();
+	ModelsSingleton::Instance()->CleanListOfModels(args);
 
 	// increase the number of frame during this second
 	nbFrame++;

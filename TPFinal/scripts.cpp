@@ -1,7 +1,6 @@
 #include "scripts.h"
 #include "modelssingleton.h"
 #include "gamemanager.h"
-#include <ctime>
 
 
 // memory leaks
@@ -21,19 +20,19 @@ void PlayerScript::Action(UpdateArgs& args)
 
 	if(GetAsyncKeyState(VK_LEFT))
 	{
-		_baseModel->Translate(-3.0f * args.GetDeltaTime(), 0.0f, 0.0f);
+		_baseModel->Translate(-5.0f * args.GetDeltaTime(), 0.0f, 0.0f);
 	}
 	if(GetAsyncKeyState(VK_RIGHT))
 	{
-		_baseModel->Translate(3.0f * args.GetDeltaTime(), 0.0f, 0.0f);
+		_baseModel->Translate(5.0f * args.GetDeltaTime(), 0.0f, 0.0f);
 	}
 	if(GetAsyncKeyState(VK_UP))
 	{
-		_baseModel->Translate(0.0f, 3.0f * args.GetDeltaTime(), 0.0f);
+		_baseModel->Translate(0.0f, 5.0f * args.GetDeltaTime(), 0.0f);
 	}
 	if(GetAsyncKeyState(VK_DOWN))
 	{
-		_baseModel->Translate(0.0f, -3.0f * args.GetDeltaTime(), 0.0f);
+		_baseModel->Translate(0.0f, -5.0f * args.GetDeltaTime(), 0.0f);
 	}
 }
 
@@ -48,14 +47,13 @@ void PlayerScript::Collide(EventArgs args)
 ///////////////////////
 void ObstacleScript::Start()
 {
+	isDestroyed = false;
 	
-	// random X position [-3;3]
-	std::srand((int)std::time(0));
-	float randStartPosition = (float)(std::rand() % 600);
-	randStartPosition -= 300;
+	float randStartPosition = (float)(std::rand() % 1000);
+	randStartPosition -= 500;
 	randStartPosition /= 100;
 
-	_baseModel->SetLocation(randStartPosition, 0.0f, 10.0f);
+	_baseModel->SetLocation(randStartPosition, 0.0f, 30.0f);
 
 }
 
@@ -65,10 +63,14 @@ void ObstacleScript::Action(UpdateArgs& args)
 
 	_baseModel->Translate(0, 0, -GameManager::Instance()->GetObstacleSpeed() * args.GetDeltaTime() );
 
+	if( isDestroyed )
+		return;
+
 	if( _baseModel->_location.z <= -2.0f )
 	{
-		ModelsSingleton::Instance()->Destroy(_baseModel);
+		ModelsSingleton::Instance()->Destroy(_baseModel, 5.0f);
 		GameManager::Instance()->ObstaclePassed();
+		isDestroyed = true;
 	}
 }
 

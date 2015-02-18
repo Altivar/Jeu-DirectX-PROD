@@ -2,6 +2,7 @@
 
 #include "model.h"
 #include <list>
+#include <map>
 
 ////      ///////      ////
 //	DECLARE MODELS ENUM  //
@@ -25,10 +26,11 @@ public:
 	Model* Instanciate(ModelName modelName, Point3 position, Point3 rotation);
 	// remove model from render list
 	void Destroy(Model* model);
-	void CleanListOfModels();
+	void Destroy(Model* model, float timer);
+	void CleanListOfModels(UpdateArgs args);
 
 	std::list<Model*> _models;
-	std::list<Model*> _modelsToRemove;
+	std::map<Model*, float> _modelsToRemove;
 
 	// models count from beginning of the app
 	int _modelsCount;
