@@ -13,17 +13,10 @@ float PI = 3.141592f;
 
 Model::Model(void)
 {
-	//SetLocation(0,0,0);
 	_location = Point3(0,0,0);
-
 	_futureLocation = _location;
-	
-	//SetRotation(0,0,0);
 	_rotation = Point3(0,0,0);
-
-	//SetScale(1.0f);
 	_scale = 1.0f;
-	
 	_changeLocation = false;
 	_changeRotation = false;
 	_changeScale = false;
@@ -76,7 +69,6 @@ Model::Model(const Model& model)
 	_futureLocation = _location;
 	this->_rotation = model._rotation;
 	this->_scale = model._scale;
-	//_futureScale = _scale;
 
 	_changeLocation = false;
 	_changeRotation = false;
@@ -307,34 +299,6 @@ void Model::Update()
 			_listVertex[i] = vertex;
 		}
 	}
-	/*else if (_changeScale)
-	{
-		if( _futureScale < 0.1f )
-			_futureScale = 0.1f;
-		float diffScale = _futureScale;
-		if( _scale == 0 )
-			diffScale /= 0.0001f;
-		else
-			diffScale /= _scale;
-
-		for(int i = 1; i <= this->nbVertex; i++)
-		{
-			// position
-			_listVertex[i].x -= _location.x;
-			_listVertex[i].y -= _location.y;
-			_listVertex[i].z -= _location.z;
-
-			// scale
-			_listVertex[i].x *= diffScale;
-			_listVertex[i].y *= diffScale;
-			_listVertex[i].z *= diffScale;
-
-			// position
-			_listVertex[i].x += _futureLocation.x;
-			_listVertex[i].y += _futureLocation.y;
-			_listVertex[i].z += _futureLocation.z;
-		}
-	}*/
 	else if(_changeLocation)
 	{
 		Point3 diffLocation = _futureLocation;
@@ -352,7 +316,6 @@ void Model::Update()
 	}
 
 	_location = _futureLocation;
-	//_scale = _futureScale;
 	_changeLocation = false;
 	_changeRotation = false;
 	_changeScale = false;
