@@ -34,7 +34,6 @@ ModelsSingleton::ModelsSingleton(void)
 
 }
 
-
 ModelsSingleton::~ModelsSingleton(void)
 {
 	std::list<Model*>::iterator it = _models.begin();
@@ -43,8 +42,16 @@ ModelsSingleton::~ModelsSingleton(void)
 		delete (*it);
 		it = _models.erase(it);
 	}
+	it = _modelsToRemove.begin();
+	while (it != _modelsToRemove.end())
+	{
+		it = _modelsToRemove.erase(it);
+	}
 }
 
+//////////////////////////
+//  SINGLETON INSTANCE  //
+//////////////////////////
 ModelsSingleton* ModelsSingleton::Instance()
 {
 	if( _instance == NULL )
@@ -58,6 +65,9 @@ void ModelsSingleton::ReleaseInstance()
 	_instance = NULL;
 }
 
+//////////////////////////
+//  INSTANTIATE/REMOVE  //
+//////////////////////////
 Model* ModelsSingleton::Instanciate(ModelName modelName)
 {
 	Model* model;
@@ -134,4 +144,22 @@ Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3
 	_modelsCount++;
 
 	return model;
+}
+
+void ModelsSingleton::Destroy(Model* model)
+{
+	_modelsToRemove.push_back(model);
+}
+
+void ModelsSingleton::CleanListOfModels()
+{
+	std::list<Model*>::iterator it = _modelsToRemove.begin();
+	for( it; it != _modelsToRemove.end(); it++ )
+	{
+		_models.remove(*it);
+		delete (*it);
+		it = _modelsToRemove.erase(it);
+		if( _modelsToRemove.empty() )
+			return;
+	}
 }

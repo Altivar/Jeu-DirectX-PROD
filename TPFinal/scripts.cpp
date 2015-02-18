@@ -1,6 +1,14 @@
 #include "scripts.h"
-#include "model.h"
+#include "modelssingleton.h"
+#include "gamemanager.h"
 #include <ctime>
+
+
+// memory leaks
+#include <crtdbg.h>
+#ifdef _DEBUG 
+  #define new new( _CLIENT_BLOCK, __FILE__, __LINE__)
+#endif // _DEBUG
 
 #define PI 3.141592f
 
@@ -55,7 +63,13 @@ void ObstacleScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
 
-	_baseModel->Translate(0, 0, -3.0f * args.GetDeltaTime() );
+	_baseModel->Translate(0, 0, -GameManager::Instance()->GetObstacleSpeed() * args.GetDeltaTime() );
+
+	if( _baseModel->_location.z <= -2.0f )
+	{
+		ModelsSingleton::Instance()->Destroy(_baseModel);
+		GameManager::Instance()->ObstaclePassed();
+	}
 }
 
 

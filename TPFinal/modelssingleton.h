@@ -19,8 +19,16 @@ class ModelsSingleton
 public:
 	static ModelsSingleton* Instance();
 	static void ReleaseInstance();
+	
+	// add model to the render list
+	Model* Instanciate(ModelName modelName);
+	Model* Instanciate(ModelName modelName, Point3 position, Point3 rotation);
+	// remove model from render list
+	void Destroy(Model* model);
+	void CleanListOfModels();
 
 	std::list<Model*> _models;
+	std::list<Model*> _modelsToRemove;
 
 	// models count from beginning of the app
 	int _modelsCount;
@@ -36,9 +44,6 @@ private:
 
 	static ModelsSingleton* _instance;
 
-	// add model to the render list
-	Model* Instanciate(ModelName modelName);
-	Model* Instanciate(ModelName modelName, Point3 position, Point3 rotation);
 
 	
 };

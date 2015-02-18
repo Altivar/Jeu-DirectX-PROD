@@ -68,6 +68,7 @@
   <ItemGroup>
     <ClCompile Include="args.cpp" />
     <ClCompile Include="eventmanager.cpp" />
+    <ClCompile Include="gamemanager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="modelcomponent.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="custom_vertex.h" />
     <ClInclude Include="eventmanager.h" />
     <ClInclude Include="face.h" />
+    <ClInclude Include="gamemanager.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="modelcomponent.h" />
     <ClInclude Include="modelssingleton.h" />

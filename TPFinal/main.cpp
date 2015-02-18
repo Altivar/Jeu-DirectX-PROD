@@ -3,6 +3,7 @@
 //	INCLUDES  //
 ////////////////
 #include "modelssingleton.h"
+#include "gamemanager.h"
 #include <math.h>
 #include <sstream>
 
@@ -82,9 +83,17 @@ void OnWindowClosed()
 	if( g_pD3D != NULL )
 		g_pD3D->Release();
 
+	// show the final score
+	std::stringstream ss;
+	ss << "Final Score : " << GameManager::Instance()->GetScore() << "\n";
+	std::string s = ss.str();
+	OutputDebugString(s.c_str());
+		
+
 	// release singletons
-	EventManager::ReleaseInstance();
+	GameManager::ReleaseInstance();
 	ModelsSingleton::ReleaseInstance();
+	EventManager::ReleaseInstance();
 
 }
 
@@ -261,12 +270,15 @@ void Update()
 	if( timer >= 1000 )
 	{
 		std::stringstream ss;
-		ss << "FPS : " << nbFrame << "\n";
+		ss << "FPS : " << nbFrame << " / Models : " << ModelsSingleton::Instance()->_models.size() << "\n";
 		std::string s = ss.str();
 		OutputDebugString(s.c_str());
 		timer -= 1000;
 		nbFrame = 0;
 	}
+
+	// update the gamemanager
+	GameManager::Instance()->UpdateGame(args);
 
 	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()->_models.begin();
 	for(it1; it1 != ModelsSingleton::Instance()->_models.end(); it1++)
@@ -277,6 +289,8 @@ void Update()
 			(*it2)->Action(args);
 		}
 	}
+
+	ModelsSingleton::Instance()->CleanListOfModels();
 
 	// increase the number of frame during this second
 	nbFrame++;
