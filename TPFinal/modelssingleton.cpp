@@ -27,6 +27,10 @@ ModelsSingleton::ModelsSingleton(void)
 
 	_modelPokeball.InitModel( ".\\Resources\\pokeball.obj" , ".\\Resources\\pokeball.png" );
 
+	_modelGround.InitModel( ".\\Resources\\ground.obj" , ".\\Resources\\ground.png" );
+
+	_modelFond.InitModel( ".\\Resources\\fond.obj" , ".\\Resources\\ground.png" );
+
 }
 
 ModelsSingleton::~ModelsSingleton(void)
@@ -82,12 +86,20 @@ Model* ModelsSingleton::Instanciate(ModelName modelName)
 		model = new Model(_modelThing);
 		break;
 
+	case Ground :
+		model = new Model(_modelGround);
+		break;
+
 	case Caterpie :
 		model = new Model(_modelCaterpie);
 		break;
 
 	case Pokeball :
 		model = new Model(_modelPokeball);
+		break;
+
+	case Fond :
+		model = new Model(_modelFond);
 		break;
 
 	case Cube:
@@ -127,6 +139,10 @@ Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3
 	case Thing:
 		model = new Model(_modelThing);
 		break;
+	
+	case Ground :
+		model = new Model(_modelGround);
+		break;
 
 	case Caterpie :
 		model = new Model(_modelCaterpie);
@@ -134,6 +150,10 @@ Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3
 
 	case Pokeball :
 		model = new Model(_modelPokeball);
+		break;
+
+	case Fond :
+		model = new Model(_modelFond);
 		break;
 
 	case Cube:

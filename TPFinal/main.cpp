@@ -31,7 +31,8 @@ const int vertexCountInBuffer = 6000;
 // for the deltatime
 UINT formerTime = timeGetTime();
 UINT timer = 0;
-int nbFrame = 0;
+int frameNum = 0;
+int frameCount = 0;
 
 //////////////////////
 //  INIT DIRECT 3D  //
@@ -89,13 +90,6 @@ void OnWindowClosed()
 		g_pd3dDevice->Release();
 	if( g_pD3D != NULL )
 		g_pD3D->Release();
-
-	// show the final score
-	std::stringstream ss;
-	ss << "Final Score : " << GameManager::Instance()->GetScore() << "\n";
-	std::string s = ss.str();
-	OutputDebugString(s.c_str());
-		
 
 	// release singletons
 	GameManager::ReleaseInstance();
@@ -276,25 +270,21 @@ HRESULT InitGUI()
 ////////////////
 //  DRAW GUI  //
 ////////////////
-HRESULT DrawGUI( )
+HRESULT DrawGUI( int x, int y, LPCSTR str, D3DCOLOR color )
 {
 
 	// Create a colour for the text - in this case blue
-	D3DCOLOR fontColor = D3DCOLOR_ARGB(255,0,0,255);    
+	D3DCOLOR fontColor = color;   
 
 	// Create a rectangle to indicate where on the screen it should be drawn
 	RECT rct;
-	rct.left = 300;
+	rct.left = x;
 	rct.right = 500;
-	rct.top = 10;
-	rct.bottom = rct.top+20;
- 
-	// show the final score
-	std::stringstream ss;
-	ss << "Score : " << GameManager::Instance()->GetScore();
+	rct.top = y;
+	rct.bottom = 500;
 
 	// Draw some text 
-	g_pFont->DrawText(NULL, ss.str().c_str(), -1, &rct, 0, fontColor );
+	g_pFont->DrawText(NULL, str, -1, &rct, 0, fontColor );
 
 	return S_OK;
 }
@@ -320,7 +310,7 @@ void MatrixSettings()
 	D3DXVECTOR3 targetVector(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 upVector(-0.25f, 0.25f, 0.25f);*/
 	
-	D3DXVECTOR3 eyeVector(0.0f, 4.0f, -4.0f);
+	D3DXVECTOR3 eyeVector(0.0f, 2.7f, -2.0f);
 	D3DXVECTOR3 targetVector(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 upVector(0.0f, 1.0f, 1.0f);
 	
@@ -358,12 +348,9 @@ void Update()
 	// restart from 0 and show the FPS
 	if( timer >= 1000 )
 	{
-		std::stringstream ss;
-		ss << "FPS : " << nbFrame << " / Models : " << ModelsSingleton::Instance()->_models.size() << "\n";
-		std::string s = ss.str();
-		OutputDebugString(s.c_str());
+		frameCount = frameNum;
 		timer -= 1000;
-		nbFrame = 0;
+		frameNum = 0;
 	}
 
 	// update the gamemanager
@@ -382,7 +369,7 @@ void Update()
 	ModelsSingleton::Instance()->CleanListOfModels(args);
 
 	// increase the number of frame during this second
-	nbFrame++;
+	frameNum++;
 }
 
 //////////////
@@ -441,8 +428,14 @@ void Render()
 
 	}
 	
-	
-	DrawGUI();
+	// show the final score
+	std::stringstream ss1;
+	ss1 << "Score : " << GameManager::Instance()->GetScore();
+	DrawGUI(350, 10, ss1.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
+
+	std::stringstream ss2;
+	ss2 << "FPS : " << frameCount << " / Models : " << ModelsSingleton::Instance()->_models.size() << "\n";
+	DrawGUI(10, 10, ss2.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
 
 	// end render
 	g_pd3dDevice->EndScene();

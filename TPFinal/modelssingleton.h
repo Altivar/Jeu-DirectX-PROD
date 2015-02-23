@@ -13,8 +13,10 @@ enum ModelName
 	Torus,
 	Book,
 	Thing,
+	Ground,
 	Caterpie,
-	Pokeball
+	Pokeball,
+	Fond
 };
 
 class ModelsSingleton
@@ -43,6 +45,8 @@ public:
 	Model _modelBook;
 	Model _modelCaterpie;
 	Model _modelPokeball;
+	Model _modelGround;
+	Model _modelFond;
 
 private:
 	ModelsSingleton(void);

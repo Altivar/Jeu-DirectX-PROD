@@ -18,7 +18,7 @@ void PlayerScript::Start()
 {
 	yAngle = 0.0f;
 
-	_baseModel->SetLocation(0, -0.5f, 0);
+	_baseModel->SetLocation(0, 0.5f, 0);
 }
 
 void PlayerScript::Action(UpdateArgs& args)
@@ -28,30 +28,53 @@ void PlayerScript::Action(UpdateArgs& args)
 	if(GetAsyncKeyState(VK_LEFT))
 	{
 		yAngle -= PI/2*args.GetDeltaTime();
+		_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
 	}
 	else if(GetAsyncKeyState(VK_RIGHT))
 	{
 		yAngle += PI/2*args.GetDeltaTime();
+		_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
 	}
 	else // if there is no input
 	{
-		if( yAngle > 0.05f )
+		if( yAngle == 0.0f )
+		{
+			return;
+		}
+		else if( yAngle > 0.05f )
+		{
 			yAngle -= (PI/2*args.GetDeltaTime() > yAngle) ? yAngle : PI/2*args.GetDeltaTime();
+			_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
+		}
 		else if( yAngle < -0.05f )
+		{
 			yAngle += (PI/2*args.GetDeltaTime() > -yAngle) ? -yAngle : PI/2*args.GetDeltaTime();
+			_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
+		}
 		else
+		{
 			yAngle = 0.0f;
+			_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
+		}
 	}
 	if( yAngle > PI/6.0f )
+	{
 		yAngle = PI/6.0f;
+		_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
+	}
 	if( yAngle < -PI/6.0f )
+	{
 		yAngle = -PI/6.0f;
+		_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
+	}
 
-	_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
-
-	_baseModel->Translate(5.0f * (yAngle/(PI/6.0f)) * args.GetDeltaTime(), 0.0f, 0.0f);
-		
-
+	float newX = 5.0f * (yAngle/(PI/6.0f)) * args.GetDeltaTime() + _baseModel->_location.x;
+	if( newX > 3.5f )
+		newX = 3.5f;
+	if( newX < -3.5f )
+		newX = -3.5f;
+	_baseModel->SetLocation(newX, _baseModel->_location.y, _baseModel->_location.z);
+	
 }
 
 void PlayerScript::Collide(EventArgs args)
@@ -70,9 +93,10 @@ void ObstacleScript::Start()
 	
 	float randStartPosition = (float)(std::rand() % 1000);
 	randStartPosition -= 500;
-	randStartPosition /= 100;
+	randStartPosition /= 500;
+	randStartPosition *= 3.5f;
 
-	_baseModel->SetLocation(randStartPosition, 0.0f, 30.0f);
+	_baseModel->SetLocation(randStartPosition, 1.0f, 30.0f);
 
 }
 
@@ -87,12 +111,11 @@ void ObstacleScript::Action(UpdateArgs& args)
 
 	if( _baseModel->_location.z <= -2.0f )
 	{
-		ModelsSingleton::Instance()->Destroy(_baseModel, 5.0f);
+		ModelsSingleton::Instance()->Destroy(_baseModel, 1.0f);
 		GameManager::Instance()->ObstaclePassed();
 		isDestroyed = true;
 	}
 }
-
 
 
 
