@@ -22,6 +22,9 @@ LPDIRECT3D9 g_pD3D = NULL;
 LPDIRECT3DDEVICE9 g_pd3dDevice = NULL;
 LPDIRECT3DVERTEXBUFFER9 g_pVB = NULL;
 LPDIRECT3DTEXTURE9 g_pTexture = NULL;
+LPD3DXFONT g_pFont = NULL;
+LPD3DXSPRITE g_pSprite = NULL;
+
 FLOAT texture_size = 1.0f;
 const int vertexCountInBuffer = 6000;
 
@@ -74,6 +77,10 @@ HRESULT InitDirect3D(HWND hWnd)
 ////////////////////
 void OnWindowClosed()
 {
+	if( g_pSprite != NULL )
+		g_pSprite->Release();
+	if( g_pFont != NULL )
+		g_pFont->Release();
 	if( g_pTexture != NULL )
 		g_pTexture->Release();
 	if( g_pVB != NULL )
@@ -209,6 +216,88 @@ HRESULT InitTexture(std::string texturepath)
 
 }
 
+
+////////////////
+//  LOAD FONT //
+////////////////
+HRESULT LoadFont(LPD3DXFONT pFont, char* fontName, LPDIRECT3DDEVICE9 pDevice)
+{
+	// clear if not empty <no memory leaks!!>
+	if(pFont)
+		pFont->Release();
+
+	// font description struct
+	D3DXFONT_DESC	m_fontDesc;
+
+	ZeroMemory(&m_fontDesc, sizeof(D3DXFONT_DESC));
+	m_fontDesc.Height			= 12;  
+	m_fontDesc.Width			= 8;  
+	m_fontDesc.Weight			= 500;  
+	m_fontDesc.MipLevels		= D3DX_DEFAULT;  
+	m_fontDesc.Italic			= false;  
+	m_fontDesc.CharSet			= 0;  
+	m_fontDesc.OutputPrecision	= 0;  
+	m_fontDesc.Quality			= 0;  
+	m_fontDesc.PitchAndFamily	= 0;  
+	strcpy_s(m_fontDesc.FaceName, fontName); // name will be something like "Arial"
+	
+	
+	if(FAILED(D3DXCreateFont( 
+			g_pd3dDevice, 
+			20, 0, 
+			FW_BOLD, 
+			0,
+			FALSE, 
+			DEFAULT_CHARSET, 
+			OUT_DEFAULT_PRECIS, 
+			DEFAULT_QUALITY, 
+			DEFAULT_PITCH | FF_DONTCARE, 
+			TEXT("Arial"),
+			&g_pFont )))
+		return E_FAIL;
+
+	return S_OK;
+
+}
+
+////////////////
+//  INIT GUI  //
+////////////////
+HRESULT InitGUI()
+{
+	LoadFont(g_pFont, "Arial", g_pd3dDevice);
+	if( FAILED(D3DXCreateSprite(g_pd3dDevice, &g_pSprite)))
+		return E_FAIL;
+
+	return S_OK;
+}
+
+
+////////////////
+//  DRAW GUI  //
+////////////////
+HRESULT DrawGUI( )
+{
+
+	// Create a colour for the text - in this case blue
+	D3DCOLOR fontColor = D3DCOLOR_ARGB(255,0,0,255);    
+
+	// Create a rectangle to indicate where on the screen it should be drawn
+	RECT rct;
+	rct.left = 300;
+	rct.right = 500;
+	rct.top = 10;
+	rct.bottom = rct.top+20;
+ 
+	// show the final score
+	std::stringstream ss;
+	ss << "Score : " << GameManager::Instance()->GetScore();
+
+	// Draw some text 
+	g_pFont->DrawText(NULL, ss.str().c_str(), -1, &rct, 0, fontColor );
+
+	return S_OK;
+}
 
 //////////////
 //  MATRIX  //
@@ -353,7 +442,7 @@ void Render()
 	}
 	
 	
-
+	DrawGUI();
 
 	// end render
 	g_pd3dDevice->EndScene();
@@ -448,7 +537,8 @@ int WINAPI WinMain(
 	//  Init Direct 3D
 	InitDirect3D(hWnd);
 
-
+	// init GUI
+	InitGUI();
 
 	// show
 	ShowWindow(hWnd, nCmdShow);
