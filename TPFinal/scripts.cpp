@@ -14,32 +14,51 @@
 /////////////////////
 //  PLAYER SCRIPT  //
 /////////////////////
+void PlayerScript::Start()
+{
+	yAngle = 0.0f;
+
+	_baseModel->SetLocation(0, -0.5f, 0);
+}
+
 void PlayerScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
 
 	if(GetAsyncKeyState(VK_LEFT))
 	{
-		_baseModel->Translate(-5.0f * args.GetDeltaTime(), 0.0f, 0.0f);
+		yAngle -= PI/2*args.GetDeltaTime();
 	}
-	if(GetAsyncKeyState(VK_RIGHT))
+	else if(GetAsyncKeyState(VK_RIGHT))
 	{
-		_baseModel->Translate(5.0f * args.GetDeltaTime(), 0.0f, 0.0f);
+		yAngle += PI/2*args.GetDeltaTime();
 	}
-	if(GetAsyncKeyState(VK_UP))
+	else // if there is no input
 	{
-		_baseModel->Translate(0.0f, 5.0f * args.GetDeltaTime(), 0.0f);
+		if( yAngle > 0.05f )
+			yAngle -= (PI/2*args.GetDeltaTime() > yAngle) ? yAngle : PI/2*args.GetDeltaTime();
+		else if( yAngle < -0.05f )
+			yAngle += (PI/2*args.GetDeltaTime() > -yAngle) ? -yAngle : PI/2*args.GetDeltaTime();
+		else
+			yAngle = 0.0f;
 	}
-	if(GetAsyncKeyState(VK_DOWN))
-	{
-		_baseModel->Translate(0.0f, -5.0f * args.GetDeltaTime(), 0.0f);
-	}
+	if( yAngle > PI/6.0f )
+		yAngle = PI/6.0f;
+	if( yAngle < -PI/6.0f )
+		yAngle = -PI/6.0f;
+
+	_baseModel->SetRotation(Point3(0, 1.0f, 0), yAngle+PI/2);
+
+	_baseModel->Translate(5.0f * (yAngle/(PI/6.0f)) * args.GetDeltaTime(), 0.0f, 0.0f);
+		
+
 }
 
 void PlayerScript::Collide(EventArgs args)
 {
 	_baseModel->SetTexture(".\\Resources\\redstone_block.png");
 }
+
 
 
 ///////////////////////

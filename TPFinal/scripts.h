@@ -7,7 +7,9 @@
 /////////////////////
 class PlayerScript : public ScriptComponent
 {
-
+private:
+	float yAngle;
+	virtual void Start();
 public:
 	PlayerScript(Model* model) : ScriptComponent(model){}
 	virtual void Action(UpdateArgs& args);

@@ -23,6 +23,14 @@ GameManager::GameManager(void)
 	_timeBetweenObstacles = 2.0f;
 	_obstacleSpeed = 3.0f;
 	_score = 0;
+
+	Model* m1 = ModelsSingleton::Instance()->Instanciate(Caterpie, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 3.141592f/2.0f, 0.0f));
+	m1->SetScale(0.2f);
+	m1->AddComponent(new ColliderComponent(m1));
+	m1->AddComponent(new PlayerScript(m1));
+
+	Model* m2 = ModelsSingleton::Instance()->Instanciate(Pokeball);
+	m2->AddComponent(new ObstacleScript(m2));
 }
 
 GameManager::~GameManager(void)
@@ -57,7 +65,7 @@ void GameManager::UpdateGame(UpdateArgs args)
 		timeToWait = 1.0f;
 	if( _timer >= timeToWait )
 	{
-		Model* model = ModelsSingleton::Instance()->Instanciate(Torus);
+		Model* model = ModelsSingleton::Instance()->Instanciate(Pokeball);
 		model->AddComponent(new ObstacleScript(model));
 
 		_timer -= _timeBetweenObstacles;

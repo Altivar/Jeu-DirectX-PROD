@@ -12,7 +12,9 @@ enum ModelName
 	Cube = 0,
 	Torus,
 	Book,
-	Thing
+	Thing,
+	Caterpie,
+	Pokeball
 };
 
 class ModelsSingleton
@@ -39,6 +41,8 @@ public:
 	Model _modelTorus;
 	Model _modelThing;
 	Model _modelBook;
+	Model _modelCaterpie;
+	Model _modelPokeball;
 
 private:
 	ModelsSingleton(void);

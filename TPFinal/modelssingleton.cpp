@@ -23,14 +23,9 @@ ModelsSingleton::ModelsSingleton(void)
 
 	_modelBook.InitModel( ".\\Resources\\LivreFerme.obj" , ".\\Resources\\LivreFermeRouge.png" );
 	
+	_modelCaterpie.InitModel( ".\\Resources\\chenipan.obj" , ".\\Resources\\chenipan.png" );
 
-	Model* m1 = Instanciate(Cube, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 0.0f, 0.0f));
-	m1->AddComponent(new ColliderComponent(m1));
-	m1->AddComponent(new PlayerScript(m1));
-
-	Model* m2 = Instanciate(Torus);
-	m2->AddComponent(new ObstacleScript(m2));
-	m2->SetTexture(".\\Resources\\stonebrick_mossy.png");
+	_modelPokeball.InitModel( ".\\Resources\\pokeball.obj" , ".\\Resources\\pokeball.png" );
 
 }
 
@@ -87,6 +82,14 @@ Model* ModelsSingleton::Instanciate(ModelName modelName)
 		model = new Model(_modelThing);
 		break;
 
+	case Caterpie :
+		model = new Model(_modelCaterpie);
+		break;
+
+	case Pokeball :
+		model = new Model(_modelPokeball);
+		break;
+
 	case Cube:
 	default:
 		model = new Model(_modelCube);
@@ -113,19 +116,27 @@ Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3
 	switch(modelName)
 	{
 
-	case 1: //ModelName::Torus:
+	case Torus:
 		model = new Model(_modelTorus);
 		break;
 
-	case 2: //ModelName::Book:
+	case Book:
 		model = new Model(_modelBook);
 		break;
 
-	case 3: //ModelName::Thing:
+	case Thing:
 		model = new Model(_modelThing);
 		break;
 
-	case 0: //ModelName::Cube:
+	case Caterpie :
+		model = new Model(_modelCaterpie);
+		break;
+
+	case Pokeball :
+		model = new Model(_modelPokeball);
+		break;
+
+	case Cube:
 	default:
 		model = new Model(_modelCube);
 		break;
