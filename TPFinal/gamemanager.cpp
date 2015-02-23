@@ -89,6 +89,6 @@ void GameManager::ObstaclePassed()
 	int pointsGained = (int)(_obstacleSpeed * 10.0f);
 	_score += pointsGained;
 
-	_obstacleSpeed += 0.2f;
+	_obstacleSpeed += 0.5f;
 }
 
