@@ -91,14 +91,14 @@ void ObstacleScript::Start()
 {
 	isDestroyed = false;
 	
-	_baseModel->SetScale(0.7f);
+	_baseModel->SetScale(0.5f);
 
 	float randStartPosition = (float)(std::rand() % 1000);
 	randStartPosition -= 500;
 	randStartPosition /= 500;
 	randStartPosition *= 3.5f;
 
-	_baseModel->SetLocation(randStartPosition, 1.0f, 30.0f);
+	_baseModel->SetLocation(randStartPosition, 1.0f, 16.0f);
 
 }
 
@@ -106,7 +106,7 @@ void ObstacleScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
 
-	_baseModel->Translate(0, 0, -GameManager::Instance()->GetObstacleSpeed() * args.GetDeltaTime() );
+	_baseModel->Translate(0, 0, -speed * args.GetDeltaTime() );
 	_baseModel->Rotate(0, 2*PI*args.GetDeltaTime(), 0);
 
 	if( isDestroyed )

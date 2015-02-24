@@ -22,7 +22,7 @@ GameManager::GameManager(void)
 	_timer = 0.0f;
 	_timeBetweenObstacles = 5.0f;
 	_obstacleSpeed = 7.0f;
-	_score = 0;
+	_score = 1;
 
 	// player
 	Model* m1 = ModelsSingleton::Instance()->Instanciate(Caterpie, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 3.141592f/2.0f, 0.0f));
@@ -80,15 +80,48 @@ void GameManager::UpdateGame(UpdateArgs args)
 {
 
 	_timer += args.GetDeltaTime();
-	float timeToWait = _timeBetweenObstacles - (_score / 500.0f)*0.1f;
+	float timeToWait = _timeBetweenObstacles - (_score / 500.0f);
 	if( timeToWait < 1.0f )
 		timeToWait = 1.0f;
 	if( _timer >= timeToWait )
 	{
-		Model* model = ModelsSingleton::Instance()->Instanciate(Pokeball);
-		model->AddComponent(new ObstacleScript(model));
 
-		_timer -= _timeBetweenObstacles;
+		Model* model;
+		ObstacleScript* os;
+		float rand = (float)(std::rand() % _score);
+		if( rand > 1200 )
+		{
+			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+			model->SetTexture(".\\Resources\\stonebrick_mossy.png");
+			os = new ObstacleScript(model);
+			os->speed = 11.0f;
+		}
+		else if ( rand > 600 )
+		{
+			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+			model->SetTexture(".\\Resources\\hyperball.png");
+			os = new ObstacleScript(model);
+			os->speed = 9.0f;
+		}
+		else if ( rand > 300 )
+		{
+			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+			model->SetTexture(".\\Resources\\superball.png");
+			os = new ObstacleScript(model);
+			os->speed = 7.0f;
+		}
+		else
+		{
+			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+			model->SetTexture(".\\Resources\\pokeball.png");
+			os = new ObstacleScript(model);
+			os->speed = 5.0f;
+		}
+
+		model->AddComponent(os);
+
+		_timer -= timeToWait;
+
 	}
 
 }

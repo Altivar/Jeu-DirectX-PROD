@@ -27,6 +27,8 @@ private:
 public:
 	ObstacleScript(Model* model) : ScriptComponent(model){}
 	virtual void Action(UpdateArgs& args);
+
+	float speed;
 };
 
 
