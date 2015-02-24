@@ -120,6 +120,18 @@ void ObstacleScript::Action(UpdateArgs& args)
 	}
 }
 
+void HomingObstacleScript::Action(UpdateArgs& args)
+{
+	ObstacleScript::Action(args);
+
+	if( target == NULL )
+		return;
+
+	if( target->_location.x > _baseModel->_location.x )
+		_baseModel->Translate(1.5f*args.GetDeltaTime(), 0, 0);
+	else
+		_baseModel->Translate(-1.5f*args.GetDeltaTime(), 0, 0);
+}
 
 
 ///////////////////

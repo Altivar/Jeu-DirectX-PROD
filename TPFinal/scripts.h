@@ -21,7 +21,7 @@ public:
 ///////////////////////
 class ObstacleScript : public ScriptComponent
 {
-private:
+protected:
 	virtual void Start();
 	bool isDestroyed;
 public:
@@ -29,6 +29,16 @@ public:
 	virtual void Action(UpdateArgs& args);
 
 	float speed;
+};
+
+class HomingObstacleScript : public ObstacleScript
+{
+public:
+	HomingObstacleScript(Model* model) : ObstacleScript(model){}
+	virtual void Action(UpdateArgs& args);
+
+	Model* target;
+	
 };
 
 

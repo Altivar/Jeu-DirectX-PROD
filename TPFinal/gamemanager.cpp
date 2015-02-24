@@ -25,10 +25,10 @@ GameManager::GameManager(void)
 	_score = 1;
 
 	// player
-	Model* m1 = ModelsSingleton::Instance()->Instanciate(Caterpie, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 3.141592f/2.0f, 0.0f));
-	m1->SetScale(0.2f);
-	m1->AddComponent(new ColliderComponent(m1));
-	m1->AddComponent(new PlayerScript(m1));
+	_player = ModelsSingleton::Instance()->Instanciate(Caterpie, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 3.141592f/2.0f, 0.0f));
+	_player->SetScale(0.2f);
+	_player->AddComponent(new ColliderComponent(_player));
+	_player->AddComponent(new PlayerScript(_player));
 
 	// ground
 	Model* m2 = ModelsSingleton::Instance()->Instanciate(Ground);
@@ -87,38 +87,45 @@ void GameManager::UpdateGame(UpdateArgs args)
 	{
 
 		Model* model;
-		ObstacleScript* os;
 		float rand = (float)(std::rand() % _score);
 		if( rand > 1200 )
 		{
+			HomingObstacleScript* os;
 			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
-			model->SetTexture(".\\Resources\\stonebrick_mossy.png");
-			os = new ObstacleScript(model);
-			os->speed = 11.0f;
-		}
-		else if ( rand > 600 )
-		{
-			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
-			model->SetTexture(".\\Resources\\hyperball.png");
-			os = new ObstacleScript(model);
-			os->speed = 9.0f;
-		}
-		else if ( rand > 300 )
-		{
-			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
-			model->SetTexture(".\\Resources\\superball.png");
-			os = new ObstacleScript(model);
-			os->speed = 7.0f;
+			model->SetTexture(".\\Resources\\masterball.png");
+			os = new HomingObstacleScript(model);
+			os->target = _player;
+			os->speed = 14.0f;
+			model->AddComponent(os);
 		}
 		else
 		{
-			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
-			model->SetTexture(".\\Resources\\pokeball.png");
-			os = new ObstacleScript(model);
-			os->speed = 5.0f;
+			ObstacleScript* os;
+			if ( rand > 600 )
+			{
+				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+				model->SetTexture(".\\Resources\\hyperball.png");
+				os = new ObstacleScript(model);
+				os->speed = 10.0f;
+			}
+			else if ( rand > 300 )
+			{
+				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+				model->SetTexture(".\\Resources\\superball.png");
+				os = new ObstacleScript(model);
+				os->speed = 8.0f;
+			}
+			else
+			{
+				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+				model->SetTexture(".\\Resources\\pokeball.png");
+				os = new ObstacleScript(model);
+				os->speed = 6.0f;
+			}
+			model->AddComponent(os);
 		}
 
-		model->AddComponent(os);
+		
 
 		_timer -= timeToWait;
 

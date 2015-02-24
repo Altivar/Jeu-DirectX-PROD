@@ -1,6 +1,8 @@
 #pragma once
 #include "args.h"
 
+struct Model;
+
 class GameManager
 {
 public:
@@ -23,5 +25,7 @@ private:
 	float _timeBetweenObstacles;
 	float _obstacleSpeed;
 	int _score;
+
+	Model* _player;
 };
 
