@@ -48,6 +48,7 @@ GameManager::GameManager(void)
 	m8->_tilingX = 15;
 	m8->_tilingY = 15;
 	m8->SetTexture(".\\Resources\\watertexture.png");
+	m8->AddComponent(new WaterScript(m8));
 
 	// local obstacles
 	Model* m3 = ModelsSingleton::Instance()->Instanciate(Cube, Point3(-5.5f, 1.0f, 1.0f), Point3(0,0,0));

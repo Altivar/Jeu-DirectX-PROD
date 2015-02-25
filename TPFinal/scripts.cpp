@@ -133,6 +133,19 @@ void HomingObstacleScript::Action(UpdateArgs& args)
 		_baseModel->Translate(-1.5f*args.GetDeltaTime(), 0, 0);
 }
 
+////////////////////
+//  WATER SCRIPT  //
+////////////////////
+void WaterScript::Action(UpdateArgs& args)
+{
+	ScriptComponent::Action(args);
+	
+	_baseModel->Translate(-1.0f * args.GetDeltaTime(), 0, 0);
+	if( _baseModel->_location.x < -5.0f )
+		_baseModel->Translate(4.8f, 0, 0);
+}
+
+
 
 ///////////////////
 //  TEST SCRIPT  //

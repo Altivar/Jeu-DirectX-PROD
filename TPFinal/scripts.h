@@ -41,6 +41,15 @@ public:
 	
 };
 
+////////////////////
+//  WATER SCRIPT  //
+////////////////////
+class WaterScript : public ScriptComponent
+{
+public:
+	WaterScript(Model* model) : ScriptComponent(model){}
+	virtual void Action(UpdateArgs& args);
+};
 
 ///////////////////
 //  TEST SCRIPT  //
