@@ -33,9 +33,21 @@ GameManager::GameManager(void)
 	// ground
 	Model* m2 = ModelsSingleton::Instance()->Instanciate(Ground);
 	m2->SetScale(10.0f);
-	m2->SetLocation(0, 0, 3.0f);
-	m2->_tilingX = 20;
-	m2->_tilingY = 20;
+	m2->SetLocation(0, 0, 9.0f);
+	m2->_tilingX = 15;
+	m2->_tilingY = 15;
+	Model* m7 = ModelsSingleton::Instance()->Instanciate(Ground);
+	m7->SetScale(6.0f);
+	m7->SetLocation(0, -3.0f, -3.0f);
+	m7->SetRotation(-3.141592f/6, 0, 0);
+	m7->SetTexture(".\\Resources\\rocktexture.png");
+	m7->_tilingX = 10;
+	Model* m8 = ModelsSingleton::Instance()->Instanciate(Ground);
+	m8->SetScale(6.0f);
+	m8->SetLocation(0, -3.0f, 0);
+	m8->_tilingX = 15;
+	m8->_tilingY = 15;
+	m8->SetTexture(".\\Resources\\watertexture.png");
 
 	// local obstacles
 	Model* m3 = ModelsSingleton::Instance()->Instanciate(Cube, Point3(-5.5f, 1.0f, 1.0f), Point3(0,0,0));
