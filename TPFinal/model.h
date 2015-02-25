@@ -68,6 +68,10 @@ struct Model
 	void AddComponent(ModelComponent* component);
 	std::list<ModelComponent*> _components;
 
+	// tiling texture
+	int _tilingX;
+	int _tilingY;
+
 private :
 	bool ReadFileCounts();
 	bool LoadData();

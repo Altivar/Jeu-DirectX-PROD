@@ -34,6 +34,8 @@ GameManager::GameManager(void)
 	Model* m2 = ModelsSingleton::Instance()->Instanciate(Ground);
 	m2->SetScale(10.0f);
 	m2->SetLocation(0, 0, 3.0f);
+	m2->_tilingX = 20;
+	m2->_tilingY = 20;
 
 	// local obstacles
 	Model* m3 = ModelsSingleton::Instance()->Instanciate(Cube, Point3(-5.5f, 1.0f, 1.0f), Point3(0,0,0));

@@ -134,8 +134,8 @@ HRESULT InitVertexBuffer()
 				int tPos = (*it2).second->_vertexTable[i].texturePosition;
 
 				sommets[indexOfVertex].COLOR = (*it2).second->_vertexTable[i].COLOR;
-				sommets[indexOfVertex].u = (*it1)->_textures[tPos].x;
-				sommets[indexOfVertex].v = (*it1)->_textures[tPos].y;
+				sommets[indexOfVertex].u = (*it1)->_textures[tPos].x * (*it1)->_tilingX;
+				sommets[indexOfVertex].v = (*it1)->_textures[tPos].y * (*it1)->_tilingY;
 				sommets[indexOfVertex].x = (*it1)->_listVertex[vPos].x;
 				sommets[indexOfVertex].y = (*it1)->_listVertex[vPos].y;
 				sommets[indexOfVertex].z = (*it1)->_listVertex[vPos].z;

@@ -24,6 +24,8 @@ Model::Model(void)
 	_components.clear();
 	_modelNum = -1;
 	_hasBeenInitialized = false;
+	_tilingX = 1;
+	_tilingY = 1;
 }
 
 Model::Model(const Model& model)
@@ -76,6 +78,9 @@ Model::Model(const Model& model)
 
 	_modelNum = -1;
 	_hasBeenInitialized = false;
+
+	this->_tilingX = model._tilingX;
+	this->_tilingY = model._tilingY;
 }
 
 Model::~Model(void)
