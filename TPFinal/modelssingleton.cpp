@@ -31,6 +31,8 @@ ModelsSingleton::ModelsSingleton(void)
 
 	_modelFond.InitModel( ".\\Resources\\fond.obj" , ".\\Resources\\ground.png" );
 
+	_modelRock.InitModel( ".\\Resources\\rock.obj" , ".\\Resources\\stonebrick_mossy.png" );
+
 }
 
 ModelsSingleton::~ModelsSingleton(void)
@@ -102,6 +104,13 @@ Model* ModelsSingleton::Instanciate(ModelName modelName)
 		model = new Model(_modelFond);
 		break;
 
+	case Rock :
+		model = new Model(_modelRock);
+		break;
+
+	case Tree :
+		model = new Model(_modelTree);
+
 	case Cube:
 	default:
 		model = new Model(_modelCube);
@@ -123,56 +132,13 @@ Model* ModelsSingleton::Instanciate(ModelName modelName)
 
 Model* ModelsSingleton::Instanciate(ModelName modelName, Point3 position, Point3 rotation)
 {
-	Model* model;
-
-	switch(modelName)
-	{
-
-	case Torus:
-		model = new Model(_modelTorus);
-		break;
-
-	case Book:
-		model = new Model(_modelBook);
-		break;
-
-	case Thing:
-		model = new Model(_modelThing);
-		break;
-	
-	case Ground :
-		model = new Model(_modelGround);
-		break;
-
-	case Caterpie :
-		model = new Model(_modelCaterpie);
-		break;
-
-	case Pokeball :
-		model = new Model(_modelPokeball);
-		break;
-
-	case Fond :
-		model = new Model(_modelFond);
-		break;
-
-	case Cube:
-	default:
-		model = new Model(_modelCube);
-		break;
-
-	}
+	Model* model = Instanciate(modelName);
 
 	if( model == NULL )
 		return NULL;
 
 	model->SetLocation(position);
 	model->SetRotation(rotation);
-
-	model->_modelNum = _modelsCount;
-	_models.push_back(model);
-
-	_modelsCount++;
 
 	return model;
 }

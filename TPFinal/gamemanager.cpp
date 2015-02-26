@@ -20,7 +20,7 @@ GameManager::GameManager(void)
 	std::srand((int)time(0));
 	
 	_timer = 0.0f;
-	_timeBetweenObstacles = 5.0f;
+	_timeBetweenObstacles = 3.5f;
 	_obstacleSpeed = 7.0f;
 	_score = 1;
 
@@ -51,10 +51,12 @@ GameManager::GameManager(void)
 	m8->AddComponent(new WaterScript(m8));
 
 	// local obstacles
-	Model* m3 = ModelsSingleton::Instance()->Instanciate(Cube, Point3(-5.5f, 1.0f, 1.0f), Point3(0,0,0));
-	m3->SetTexture(".\\Resources\\stonebrick_mossy.png");
-	Model* m4 = ModelsSingleton::Instance()->Instanciate(Cube, Point3(5.5f, 1.0f, 1.0f), Point3(0,0,0));
-	m4->SetTexture(".\\Resources\\stonebrick_mossy.png");
+	Model* m3 = ModelsSingleton::Instance()->Instanciate(Rock, Point3(-5.2f, 1.0f, 0), Point3(0,1.3f,0));
+	Model* m4 = ModelsSingleton::Instance()->Instanciate(Rock, Point3(5.7f, 1.0f, 0), Point3(0,-0.25f,0));
+	m3->SetScale(0.4f);
+	m4->SetScale(0.7f);
+	m3->SetTexture(".\\Resources\\rocktexture2.png");
+	m4->SetTexture(".\\Resources\\rocktexture2.png");
 
 	// for the background
 	Model* m5 = ModelsSingleton::Instance()->Instanciate(Fond);
@@ -65,6 +67,7 @@ GameManager::GameManager(void)
 	m6->SetLocation(0, -0.5f, 14.0f);
 	m6->SetScale(0.3f);
 	m6->SetTexture(".\\Resources\\ennemy.png");
+
 
 }
 
@@ -103,7 +106,7 @@ void GameManager::UpdateGame(UpdateArgs args)
 
 		Model* model;
 		float rand = (float)(std::rand() % _score);
-		if( rand > 1200 )
+		if( rand > 1500 )
 		{
 			HomingObstacleScript* os;
 			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
@@ -116,14 +119,14 @@ void GameManager::UpdateGame(UpdateArgs args)
 		else
 		{
 			ObstacleScript* os;
-			if ( rand > 600 )
+			if ( rand > 700 )
 			{
 				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
 				model->SetTexture(".\\Resources\\hyperball.png");
 				os = new ObstacleScript(model);
 				os->speed = 10.0f;
 			}
-			else if ( rand > 300 )
+			else if ( rand > 200 )
 			{
 				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
 				model->SetTexture(".\\Resources\\superball.png");
