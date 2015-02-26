@@ -4,6 +4,7 @@
 ////////////////
 #include "modelssingleton.h"
 #include "gamemanager.h"
+#include "guimanager.h"
 #include <math.h>
 #include <sstream>
 
@@ -95,6 +96,7 @@ void OnWindowClosed()
 	GameManager::ReleaseInstance();
 	ModelsSingleton::ReleaseInstance();
 	EventManager::ReleaseInstance();
+	GUIManager::ReleaseInstance();
 
 }
 
@@ -378,12 +380,21 @@ void Update()
 void Render()
 {
 
-	// UPDATE //
-	Update();
+	// get the current scene
+	// 0 = Main Menu
+	// 1 = Game
+	// 2 = Game Over
+	int SCENE = GUIManager::Instance()->CheckForSceneState();
+	
+	if( SCENE == 0)
+	{
+		// UPDATE //
+		Update();
 
-	////
-	//  Init Vertex Buffer and Textures for rendering
-	InitVertexBuffer();
+		////
+		//  Init Vertex Buffer and Textures for rendering
+		InitVertexBuffer();
+	}
 
 	//// clear the back buffer
 	g_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET|D3DCLEAR_ZBUFFER, D3DCOLOR_XRGB(200, 200, 255), 1.0f, 0);
@@ -400,42 +411,52 @@ void Render()
 		// inform the device of vertex type used
 	g_pd3dDevice->SetFVF( D3DFVF_CUSTOM_VERTEX );
 		
-		// draw vertex of vertexbuffer
-	int numberOfVertexDrawn = 0;
-
-	std::list<Model*>::iterator it1 = ModelsSingleton::Instance()->_models.begin();
-	for( it1 = ModelsSingleton::Instance()->_models.begin();
-		 it1 != ModelsSingleton::Instance()->_models.end();
-		 it1++)
+	if( SCENE == 0 )
 	{
+			// draw vertex of vertexbuffer
+		int numberOfVertexDrawn = 0;
 
-		if( (*it1)->nbTexture > 0 )
+		std::list<Model*>::iterator it1 = ModelsSingleton::Instance()->_models.begin();
+		for( it1 = ModelsSingleton::Instance()->_models.begin();
+			 it1 != ModelsSingleton::Instance()->_models.end();
+			 it1++)
 		{
-			InitTexture((*it1)->_texture);
-		}
-		else
-		{
-			g_pd3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
-		}
 
-		std::map<int, Face*>::iterator it2 = (*it1)->_faces.begin();
+			if( (*it1)->nbTexture > 0 )
+			{
+				InitTexture((*it1)->_texture);
+			}
+			else
+			{
+				g_pd3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_DISABLE);
+			}
+
+			std::map<int, Face*>::iterator it2 = (*it1)->_faces.begin();
 		
-		for( it2; it2 != (*it1)->_faces.end(); it2++)
-		{
-			g_pd3dDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, numberOfVertexDrawn, (*it2).second->_nbVertex - 2 );
-			numberOfVertexDrawn += (*it2).second->_nbVertex;
+			for( it2; it2 != (*it1)->_faces.end(); it2++)
+			{
+				g_pd3dDevice->DrawPrimitive(D3DPT_TRIANGLEFAN, numberOfVertexDrawn, (*it2).second->_nbVertex - 2 );
+				numberOfVertexDrawn += (*it2).second->_nbVertex;
+			}
+
 		}
-
-	}
 	
-	// show the final score
-	std::stringstream ss1;
-	ss1 << "Score : " << GameManager::Instance()->GetScore();
-	DrawGUI(350, 10, ss1.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
+		// show the final score
+		std::stringstream ss1;
+		ss1 << "Score : " << GameManager::Instance()->GetScore();
+		DrawGUI(350, 10, ss1.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
 
-	std::stringstream ss2;
-	ss2 << "FPS : " << frameCount << " / Models : " << ModelsSingleton::Instance()->_models.size() << "\n";
-	DrawGUI(10, 10, ss2.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
+		if( GUIManager::Instance()->IsGameInfoEnable() )
+		{
+			std::stringstream ss2;
+			ss2 << "FPS : " << frameCount << " / Models : " << ModelsSingleton::Instance()->_models.size() << "\n";
+			DrawGUI(10, 10, ss2.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
+		}
+	}
+	else
+	{
+		
+	}
 
 	// end render
 	g_pd3dDevice->EndScene();

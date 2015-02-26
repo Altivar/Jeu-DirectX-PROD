@@ -91,7 +91,7 @@ void ObstacleScript::Start()
 {
 	isDestroyed = false;
 	
-	_baseModel->SetScale(0.5f);
+	_baseModel->SetScale(0.4f);
 
 	float randStartPosition = (float)(std::rand() % 1000);
 	randStartPosition -= 500;
