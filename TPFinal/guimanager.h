@@ -6,7 +6,8 @@ public:
 	static void ReleaseInstance();
 
 	int CheckForSceneState();
-	int IsGameInfoEnable() { return _inGameInfoEnable; }
+	bool IsGameInfoEnable() { return _inGameInfoEnable; }
+	bool IsGamePaused() { return _isPaused; }
 
 private:
 	GUIManager(void);
@@ -16,8 +17,10 @@ private:
 
 	int _sceneState;
 	bool _inGameInfoEnable;
+	bool _isPaused;
 
 	bool Click_F1;
+	bool Click_ESC;
 
 };
 

@@ -1,4 +1,5 @@
 #include "guimanager.h"
+#include "gamemanager.h"
 #include <iostream>
 #include <Windows.h>
 
@@ -14,9 +15,11 @@ GUIManager::GUIManager(void)
 {
 	_sceneState = 0;
 	_inGameInfoEnable = false;
+	_isPaused = false;
 	
 	// click gesture
 	Click_F1 = false;
+	Click_ESC = false;
 }
 
 GUIManager::~GUIManager(void)
@@ -45,6 +48,7 @@ void GUIManager::ReleaseInstance()
 int GUIManager::CheckForSceneState()
 {
 	
+	// F1 button gesture
 	if(GetAsyncKeyState(VK_F1))
 	{
 		if( !Click_F1 )
@@ -54,6 +58,18 @@ int GUIManager::CheckForSceneState()
 	else
 		Click_F1 = false;
 
+	// Escape button gesture
+	if(GetAsyncKeyState(VK_ESCAPE))
+	{
+		if( !Click_ESC )
+		{
+			GameManager::Instance()->Pause();
+			_isPaused = !_isPaused;
+		}
+		Click_ESC = true;
+	}
+	else
+		Click_ESC = false;
 
 
 	return _sceneState;

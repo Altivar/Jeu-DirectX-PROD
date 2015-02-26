@@ -268,7 +268,6 @@ HRESULT InitGUI()
 	return S_OK;
 }
 
-
 ////////////////
 //  DRAW GUI  //
 ////////////////
@@ -342,7 +341,7 @@ void Update()
 	// update the timer
 	timer += (time - formerTime);
 	deltaTime /= 1000.0f;
-	UpdateArgs args(deltaTime);
+	UpdateArgs args( deltaTime * GameManager::Instance()->GetTimeScale() );
 	// update the formerTime for the next frame
 	formerTime = time;
 
@@ -452,6 +451,14 @@ void Render()
 			ss2 << "FPS : " << frameCount << " / Models : " << ModelsSingleton::Instance()->_models.size() << "\n";
 			DrawGUI(10, 10, ss2.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
 		}
+
+		if( GUIManager::Instance()->IsGamePaused() )
+		{
+			std::stringstream ss2;
+			ss2 << "PAUSE";
+			DrawGUI(220, 230, ss2.str().c_str(), D3DCOLOR_ARGB(250,250,250,255));
+		}
+
 	}
 	else
 	{

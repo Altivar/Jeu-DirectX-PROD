@@ -24,6 +24,9 @@ GameManager::GameManager(void)
 	_obstacleSpeed = 7.0f;
 	_score = 1;
 
+	// time scale
+	_timeScale = 1.0f;
+
 	// player
 	_player = ModelsSingleton::Instance()->Instanciate(Caterpie, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 3.141592f/2.0f, 0.0f));
 	_player->SetScale(0.2f);
@@ -166,3 +169,10 @@ void GameManager::ObstaclePassed()
 	_obstacleSpeed += 0.5f;
 }
 
+void GameManager::Pause()
+{
+	if( _timeScale != 1.0f )
+		_timeScale = 1.0f;
+	else
+		_timeScale = 0.0f;
+}

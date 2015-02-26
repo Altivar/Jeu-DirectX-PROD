@@ -14,6 +14,8 @@ public:
 	float GetObstacleSpeed() { return _obstacleSpeed; }
 	void ObstaclePassed();
 	int GetScore() { return _score; }
+	void Pause();
+	float GetTimeScale() { return _timeScale; }
 
 private:
 	GameManager(void);
@@ -25,6 +27,8 @@ private:
 	float _timeBetweenObstacles;
 	float _obstacleSpeed;
 	int _score;
+
+	float _timeScale;
 
 	Model* _player;
 };
