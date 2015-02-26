@@ -106,7 +106,7 @@ void GameManager::UpdateGame(UpdateArgs args)
 
 		Model* model;
 		float rand = (float)(std::rand() % _score);
-		if( rand > 1500 )
+		if( rand > 2500 )
 		{
 			HomingObstacleScript* os;
 			model = ModelsSingleton::Instance()->Instanciate(Pokeball);
@@ -119,7 +119,14 @@ void GameManager::UpdateGame(UpdateArgs args)
 		else
 		{
 			ObstacleScript* os;
-			if ( rand > 700 )
+			if ( rand > 900 )
+			{
+				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
+				model->SetTexture(".\\Resources\\filetball.png");
+				os = new ObstacleScript(model);
+				os->speed = 12.0f;
+			}
+			else if ( rand > 700 )
 			{
 				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
 				model->SetTexture(".\\Resources\\hyperball.png");
