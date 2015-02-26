@@ -5,6 +5,7 @@
 #include "modelssingleton.h"
 #include "gamemanager.h"
 #include "guimanager.h"
+#include "spriteimage.h"
 #include <math.h>
 #include <sstream>
 
@@ -34,6 +35,9 @@ UINT formerTime = timeGetTime();
 UINT timer = 0;
 int frameNum = 0;
 int frameCount = 0;
+
+// sprites
+SpriteImage* mainMenuSprite = NULL;
 
 //////////////////////
 //  INIT DIRECT 3D  //
@@ -91,6 +95,8 @@ void OnWindowClosed()
 		g_pd3dDevice->Release();
 	if( g_pD3D != NULL )
 		g_pD3D->Release();
+
+	delete mainMenuSprite;
 
 	// release singletons
 	GameManager::ReleaseInstance();
@@ -290,6 +296,18 @@ HRESULT DrawGUI( int x, int y, LPCSTR str, D3DCOLOR color )
 	return S_OK;
 }
 
+////////////////////
+//  INIT SPRITES  //
+////////////////////
+HRESULT InitSprites()
+{
+	mainMenuSprite = new SpriteImage(0, 0);
+	if( !mainMenuSprite->Initialize(g_pd3dDevice, ".\\Resources\\MainMenu.png", 500, 500) )
+		return E_FAIL;
+
+	return S_OK;
+}
+
 //////////////
 //  MATRIX  //
 //////////////
@@ -385,7 +403,7 @@ void Render()
 	// 2 = Game Over
 	int SCENE = GUIManager::Instance()->CheckForSceneState();
 	
-	if( SCENE == 0)
+	if( SCENE == 1)
 	{
 		// UPDATE //
 		Update();
@@ -411,6 +429,11 @@ void Render()
 	g_pd3dDevice->SetFVF( D3DFVF_CUSTOM_VERTEX );
 		
 	if( SCENE == 0 )
+	{
+		mainMenuSprite->Draw();
+		formerTime = timeGetTime();
+	}
+	else if( SCENE == 1 )
 	{
 			// draw vertex of vertexbuffer
 		int numberOfVertexDrawn = 0;
@@ -460,7 +483,7 @@ void Render()
 		}
 
 	}
-	else
+	else if( SCENE == 2 )
 	{
 		
 	}
@@ -560,6 +583,9 @@ int WINAPI WinMain(
 
 	// init GUI
 	InitGUI();
+
+	//init sprites
+	InitSprites();
 
 	// show
 	ShowWindow(hWnd, nCmdShow);

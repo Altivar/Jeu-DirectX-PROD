@@ -21,6 +21,7 @@ private:
 
 	bool Click_F1;
 	bool Click_ESC;
+	bool Click_RET;
 
 };
 

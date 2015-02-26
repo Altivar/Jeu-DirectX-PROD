@@ -75,6 +75,7 @@
     <ClCompile Include="modelcomponent.cpp" />
     <ClCompile Include="modelssingleton.cpp" />
     <ClCompile Include="scripts.cpp" />
+    <ClCompile Include="spriteimage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="args.h" />
@@ -89,6 +90,7 @@
     <ClInclude Include="point2.h" />
     <ClInclude Include="point3.h" />
     <ClInclude Include="scripts.h" />
+    <ClInclude Include="spriteimage.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

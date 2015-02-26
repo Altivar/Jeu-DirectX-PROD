@@ -20,6 +20,7 @@ GUIManager::GUIManager(void)
 	// click gesture
 	Click_F1 = false;
 	Click_ESC = false;
+	Click_RET = false;
 }
 
 GUIManager::~GUIManager(void)
@@ -51,7 +52,7 @@ int GUIManager::CheckForSceneState()
 	// F1 button gesture
 	if(GetAsyncKeyState(VK_F1))
 	{
-		if( !Click_F1 )
+		if( !Click_F1 && _sceneState == 1 )
 			_inGameInfoEnable = !_inGameInfoEnable;
 		Click_F1 = true;
 	}
@@ -64,13 +65,26 @@ int GUIManager::CheckForSceneState()
 		if( !Click_ESC )
 		{
 			GameManager::Instance()->Pause();
-			_isPaused = !_isPaused;
+			if(_sceneState == 1)
+				_isPaused = !_isPaused;
 		}
 		Click_ESC = true;
 	}
 	else
 		Click_ESC = false;
 
+	// return button gesture
+	if(GetAsyncKeyState(VK_RETURN))
+	{
+		if( !Click_RET )
+		{
+			if( _sceneState == 0 || _sceneState == 2 )
+				_sceneState = 1;
+		}
+		Click_RET = true;
+	}
+	else
+		Click_RET = false;
 
 	return _sceneState;
 }
