@@ -106,7 +106,15 @@ void ColliderComponent::Action(UpdateArgs& args)
 				ss << "__COLLISION__" << _baseModel->_modelNum;
 				std::string eventname = ss.str();
 
-				EventManager::Instance()->FireEvent(eventname);
+				std::string tex = (*modelIt)->_texture;
+				tex.erase(tex.end()-4, tex.end());
+				std::stringstream ss2;
+				ss2 << tex << "Image.png";
+				
+				EventArgs arg;
+				arg.strArgs = ss2.str();
+
+				EventManager::Instance()->FireEvent(eventname, arg);
 			}
 		}
 	}

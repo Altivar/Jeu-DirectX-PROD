@@ -38,6 +38,10 @@ int frameCount = 0;
 
 // sprites
 SpriteImage* mainMenuSprite = NULL;
+SpriteImage* gameOverMenuSprite = NULL;
+SpriteImage* ballImage = NULL;
+// for initializing
+bool ballImageHasBeenInitialized = false;
 
 //////////////////////
 //  INIT DIRECT 3D  //
@@ -97,6 +101,8 @@ void OnWindowClosed()
 		g_pD3D->Release();
 
 	delete mainMenuSprite;
+	delete gameOverMenuSprite;
+	delete ballImage;
 
 	// release singletons
 	GameManager::ReleaseInstance();
@@ -305,6 +311,12 @@ HRESULT InitSprites()
 	if( !mainMenuSprite->Initialize(g_pd3dDevice, ".\\Resources\\MainMenu.png", 500, 500) )
 		return E_FAIL;
 
+	gameOverMenuSprite = new SpriteImage(0, 0);
+	if( !gameOverMenuSprite->Initialize(g_pd3dDevice, ".\\Resources\\GameOverMenu.png", 500, 500) )
+		return E_FAIL;
+	
+	ballImage = new SpriteImage(210, 350);
+
 	return S_OK;
 }
 
@@ -465,7 +477,7 @@ void Render()
 	
 		// show the final score
 		std::stringstream ss1;
-		ss1 << "Score : " << GameManager::Instance()->GetScore();
+		ss1 << "Score : " << GameManager::Instance()->GetScore()-1;
 		DrawGUI(350, 10, ss1.str().c_str(), D3DCOLOR_ARGB(255,100,100,255));
 
 		if( GUIManager::Instance()->IsGameInfoEnable() )
@@ -482,10 +494,25 @@ void Render()
 			DrawGUI(220, 230, ss2.str().c_str(), D3DCOLOR_ARGB(250,250,250,255));
 		}
 
+		ballImageHasBeenInitialized = false;
 	}
 	else if( SCENE == 2 )
 	{
+		gameOverMenuSprite->Draw();
+		formerTime = timeGetTime();
+		DrawGUI(350, 230, "Score :", D3DCOLOR_ARGB(190,190,255,255));
+		std::stringstream ss3;
+		ss3 << GameManager::Instance()->GetScore()-1;
+		DrawGUI(370, 250, ss3.str().c_str(), D3DCOLOR_ARGB(190,190,255,255));
 		
+		if( !ballImageHasBeenInitialized )
+		{
+			ballImageHasBeenInitialized = ballImage->Initialize(g_pd3dDevice, GUIManager::Instance()->GetFatalBallImage(), 80, 80);
+		}
+		else
+		{
+			ballImage->Draw();
+		}
 	}
 
 	// end render

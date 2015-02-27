@@ -17,6 +17,9 @@ SpriteImage::SpriteImage(void)
 
 	_isInitialized = false;
 
+	_sprite = NULL;
+	_texture = NULL;
+
 }
 
 SpriteImage::SpriteImage(float x, float y)
@@ -29,6 +32,9 @@ SpriteImage::SpriteImage(float x, float y)
 	_color = D3DCOLOR_ARGB(255, 255, 255, 255);
 
 	_isInitialized = false;
+
+	_sprite = NULL;
+	_texture = NULL;
 
 }
 	
@@ -53,6 +59,17 @@ SpriteImage::~SpriteImage(void)
 bool SpriteImage::Initialize(LPDIRECT3DDEVICE9 device, std::string file, int width, int height)
 {
 
+	if( _sprite != NULL )
+	{
+		_sprite->Release();
+		_sprite = NULL;
+	}
+	if( _texture != NULL )
+	{
+		_texture->Release();
+		_texture = NULL;
+	}
+	
 	if( FAILED( D3DXCreateTextureFromFileEx(
 			device, 
 			file.c_str(),

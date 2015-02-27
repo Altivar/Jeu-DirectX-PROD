@@ -1,6 +1,7 @@
 #include "scripts.h"
 #include "modelssingleton.h"
 #include "gamemanager.h"
+#include "guimanager.h"
 
 
 // memory leaks
@@ -80,6 +81,7 @@ void PlayerScript::Action(UpdateArgs& args)
 void PlayerScript::Collide(EventArgs args)
 {
 	_baseModel->SetTexture(".\\Resources\\redstone_block.png");
+	GUIManager::Instance()->PlayerCollided(args.strArgs);
 }
 
 

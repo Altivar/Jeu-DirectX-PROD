@@ -1,4 +1,7 @@
 #pragma once
+
+#include <string>
+
 class GUIManager
 {
 public:
@@ -8,6 +11,8 @@ public:
 	int CheckForSceneState();
 	bool IsGameInfoEnable() { return _inGameInfoEnable; }
 	bool IsGamePaused() { return _isPaused; }
+	void PlayerCollided(std::string file);
+	std::string GetFatalBallImage() { return _ballFile; }
 
 private:
 	GUIManager(void);
@@ -18,6 +23,7 @@ private:
 	int _sceneState;
 	bool _inGameInfoEnable;
 	bool _isPaused;
+	std::string _ballFile;
 
 	bool Click_F1;
 	bool Click_ESC;

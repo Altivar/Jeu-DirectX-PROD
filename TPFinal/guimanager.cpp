@@ -1,5 +1,7 @@
 #include "guimanager.h"
 #include "gamemanager.h"
+#include "modelssingleton.h"
+#include "eventmanager.h"
 #include <iostream>
 #include <Windows.h>
 
@@ -79,7 +81,13 @@ int GUIManager::CheckForSceneState()
 		if( !Click_RET )
 		{
 			if( _sceneState == 0 || _sceneState == 2 )
+			{
 				_sceneState = 1;
+				// release the singleton for restarting the game
+				GameManager::ReleaseInstance();
+				ModelsSingleton::ReleaseInstance();
+				EventManager::ReleaseInstance();
+			}
 		}
 		Click_RET = true;
 	}
@@ -87,4 +95,11 @@ int GUIManager::CheckForSceneState()
 		Click_RET = false;
 
 	return _sceneState;
+}
+
+
+void GUIManager::PlayerCollided(std::string file)
+{
+	_ballFile = file;
+	_sceneState = 2;
 }
