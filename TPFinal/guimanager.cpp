@@ -83,6 +83,9 @@ int GUIManager::CheckForSceneState()
 			if( _sceneState == 0 || _sceneState == 2 )
 			{
 				_sceneState = 1;
+				// reset the booleans
+				_isPaused = false;
+				_inGameInfoEnable = false;
 				// release the singleton for restarting the game
 				GameManager::ReleaseInstance();
 				ModelsSingleton::ReleaseInstance();

@@ -86,7 +86,10 @@ ColliderComponent::~ColliderComponent(void)
 // called at each frame
 void ColliderComponent::Action(UpdateArgs& args)
 {
-	
+
+	if( !_baseModel->_hasBeenInitialized )
+		return;
+
 	RegisterAABB();
 
 	std::list<Model*>::iterator modelIt = ModelsSingleton::Instance()->_models.begin();
@@ -118,7 +121,6 @@ void ColliderComponent::Action(UpdateArgs& args)
 			}
 		}
 	}
-
 
 }
 

@@ -80,8 +80,12 @@ void PlayerScript::Action(UpdateArgs& args)
 
 void PlayerScript::Collide(EventArgs args)
 {
-	_baseModel->SetTexture(".\\Resources\\redstone_block.png");
-	GUIManager::Instance()->PlayerCollided(args.strArgs);
+	std::string strToFind = "ballImage.png";
+	if( args.strArgs.find(strToFind) != std::string::npos )
+	{
+		_baseModel->SetTexture(".\\Resources\\redstone_block.png");
+		GUIManager::Instance()->PlayerCollided(args.strArgs);
+	}
 }
 
 

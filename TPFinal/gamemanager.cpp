@@ -66,6 +66,8 @@ GameManager::GameManager(void)
 	m5->SetLocation(0, -2.0f, 15.0f);
 	m5->SetScale(2.0f);
 	m5->SetTexture(".\\Resources\\fond.png");
+	m5->_tilingX = 3;
+	m5->_tilingY = 3;
 	Model* m6 = ModelsSingleton::Instance()->Instanciate(Fond);
 	m6->SetLocation(0, -0.5f, 14.0f);
 	m6->SetScale(0.3f);
