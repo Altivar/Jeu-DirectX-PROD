@@ -29,19 +29,18 @@ GameManager::GameManager(void)
 
 	// player
 	_player = ModelsSingleton::Instance()->Instanciate(Caterpie, Point3(0.0f, 1.0f, -1.0f), Point3(0.0f, 3.141592f/2.0f, 0.0f));
-	_player->SetScale(0.2f);
 	_player->AddComponent(new ColliderComponent(_player));
 	_player->AddComponent(new PlayerScript(_player));
 
 	// ground
 	Model* m2 = ModelsSingleton::Instance()->Instanciate(Ground);
 	m2->SetScale(10.0f);
-	m2->SetLocation(0, 0, 9.0f);
+	m2->SetLocation(0, 0, 8.0f);
 	m2->_tilingX = 15;
 	m2->_tilingY = 15;
 	Model* m7 = ModelsSingleton::Instance()->Instanciate(Ground);
 	m7->SetScale(6.0f);
-	m7->SetLocation(0, -3.0f, -3.0f);
+	m7->SetLocation(0, -3.0f, -4.0f);
 	m7->SetRotation(-3.141592f/6, 0, 0);
 	m7->SetTexture(".\\Resources\\rocktexture.png");
 	m7->_tilingX = 10;
@@ -54,8 +53,8 @@ GameManager::GameManager(void)
 	m8->AddComponent(new WaterScript(m8));
 
 	// local obstacles
-	Model* m3 = ModelsSingleton::Instance()->Instanciate(Rock, Point3(-5.2f, 1.0f, 0), Point3(0,1.3f,0));
-	Model* m4 = ModelsSingleton::Instance()->Instanciate(Rock, Point3(5.7f, 1.0f, 0), Point3(0,-0.25f,0));
+	Model* m3 = ModelsSingleton::Instance()->Instanciate(Rock, Point3(-5.2f, 1.0f, -1.0f), Point3(0,1.3f,0));
+	Model* m4 = ModelsSingleton::Instance()->Instanciate(Rock, Point3(5.7f, 1.0f, -1.0f), Point3(0,-0.25f,0));
 	m3->SetScale(0.4f);
 	m4->SetScale(0.7f);
 	m3->SetTexture(".\\Resources\\rocktexture2.png");

@@ -19,7 +19,8 @@ void PlayerScript::Start()
 {
 	yAngle = 0.0f;
 
-	_baseModel->SetLocation(0, 0.5f, 0);
+	_baseModel->SetScale(0.15f);
+	_baseModel->SetLocation(0, 0.5f, -0.5f);
 }
 
 void PlayerScript::Action(UpdateArgs& args)
