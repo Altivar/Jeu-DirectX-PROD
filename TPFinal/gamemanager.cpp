@@ -46,7 +46,7 @@ GameManager::GameManager(void)
 	m7->_tilingX = 10;
 	Model* m8 = ModelsSingleton::Instance()->Instanciate(Ground);
 	m8->SetScale(6.0f);
-	m8->SetLocation(0, -3.0f, 0);
+	m8->SetLocation(0, -2.0f, 0);
 	m8->_tilingX = 15;
 	m8->_tilingY = 15;
 	m8->SetTexture(".\\Resources\\watertexture.png");
@@ -73,6 +73,8 @@ GameManager::GameManager(void)
 	m6->SetTexture(".\\Resources\\ennemy.png");
 
 
+	Model* mfish = ModelsSingleton::Instance()->Instanciate(Fish, Point3(0,0,0), Point3(0,0,0));
+	mfish->AddComponent(new FishScript(mfish));
 }
 
 GameManager::~GameManager(void)
@@ -123,7 +125,7 @@ void GameManager::UpdateGame(UpdateArgs args)
 		else
 		{
 			ObstacleScript* os;
-			if ( rand > 900 )
+			if ( rand > 1300 )
 			{
 				model = ModelsSingleton::Instance()->Instanciate(Pokeball);
 				model->SetTexture(".\\Resources\\filetball.png");

@@ -152,7 +152,26 @@ void WaterScript::Action(UpdateArgs& args)
 		_baseModel->Translate(4.8f, 0, 0);
 }
 
+///////////////////
+//  FISH SCRIPT  //
+///////////////////
+void FishScript::Start()
+{
+	_baseModel->SetLocation(0.0f, -1.5f, -3.0f);
+	//_baseModel->SetRotation(3.14159265f,-3.14159265f/2,-3.14159265f/2);
+	_baseModel->SetRotation(PI, -PI/2, PI);
+}
 
+void FishScript::Action(UpdateArgs& args)
+{
+	ScriptComponent::Action(args);
+	
+	//_baseModel->Rotate(PI * args.GetDeltaTime(), 0, 0);
+	//_baseModel->Translate(0, -1.0f * args.GetDeltaTime(), 0);
+	/*_baseModel->Translate(-2.0f * args.GetDeltaTime(), 0, 0);
+	if( _baseModel->_location.x < -10.0f )
+		_baseModel->Translate(20.0f, 0, 0);*/
+}
 
 ///////////////////
 //  TEST SCRIPT  //

@@ -33,6 +33,7 @@ ModelsSingleton::ModelsSingleton(void)
 
 	_modelRock.InitModel( ".\\Resources\\rock.obj" , ".\\Resources\\stonebrick_mossy.png" );
 
+	_modelFish.InitModel( ".\\Resources\\Magicarpe.obj" , ".\\Resources\\magicarpe_UV.png" );
 }
 
 ModelsSingleton::~ModelsSingleton(void)
@@ -110,6 +111,11 @@ Model* ModelsSingleton::Instanciate(ModelName modelName)
 
 	case Tree :
 		model = new Model(_modelTree);
+		break;
+
+	case Fish :
+		model = new Model(_modelFish);
+		break;
 
 	case Cube:
 	default:

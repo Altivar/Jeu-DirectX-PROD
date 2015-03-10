@@ -52,6 +52,17 @@ public:
 };
 
 ///////////////////
+//  FISH SCRIPT  //
+///////////////////
+class FishScript : public ScriptComponent
+{
+	virtual void Start();
+public:
+	FishScript(Model* model) : ScriptComponent(model){}
+	virtual void Action(UpdateArgs& args);
+};
+
+///////////////////
 //  TEST SCRIPT  //
 ///////////////////
 class TestScript : public ScriptComponent

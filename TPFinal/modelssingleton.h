@@ -18,7 +18,8 @@ enum ModelName
 	Pokeball,
 	Fond,
 	Rock,
-	Tree
+	Tree,
+	Fish
 };
 
 class ModelsSingleton
@@ -51,6 +52,7 @@ public:
 	Model _modelFond;
 	Model _modelRock;
 	Model _modelTree;
+	Model _modelFish;
 
 private:
 	ModelsSingleton(void);

@@ -341,7 +341,7 @@ void MatrixSettings()
 	D3DXVECTOR3 targetVector(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 upVector(-0.25f, 0.25f, 0.25f);*/
 	
-	D3DXVECTOR3 eyeVector(0.0f, 2.7f, -2.0f);
+	D3DXVECTOR3 eyeVector(0.0f, 5.7f, -10.0f);
 	D3DXVECTOR3 targetVector(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 upVector(0.0f, 1.0f, 1.0f);
 	
@@ -349,7 +349,7 @@ void MatrixSettings()
 	g_pd3dDevice->SetTransform(D3DTS_VIEW, &viewMatrix);
 
 	D3DXMATRIX projectionMatrix;
-	int fov_degree = 135;
+	int fov_degree = 60;
 	float fovy_radian = fov_degree/180.0f*D3DX_PI;
 	float aspect = 1.0f;
 	float zn = 0.1f;
