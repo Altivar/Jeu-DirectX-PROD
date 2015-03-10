@@ -74,7 +74,10 @@ GameManager::GameManager(void)
 
 
 	Model* mfish = ModelsSingleton::Instance()->Instanciate(Fish, Point3(0,0,0), Point3(0,0,0));
-	mfish->AddComponent(new FishScript(mfish));
+	_fishScript = new FishScript(mfish);
+	mfish->AddComponent(_fishScript);
+	_fishTimer = 0;
+	_timeToWaitForFish = 5.0f;
 }
 
 GameManager::~GameManager(void)
@@ -104,6 +107,9 @@ void GameManager::UpdateGame(UpdateArgs args)
 {
 
 	_timer += args.GetDeltaTime();
+	_fishTimer += args.GetDeltaTime();
+	if(_fishTimer >= _timeToWaitForFish)
+		LaunchFish();
 	float timeToWait = _timeBetweenObstacles - (_score / 500.0f);
 	if( timeToWait < 1.0f )
 		timeToWait = 1.0f;
@@ -178,4 +184,13 @@ void GameManager::Pause()
 		_timeScale = 1.0f;
 	else
 		_timeScale = 0.0f;
+}
+
+void GameManager::LaunchFish()
+{
+	_fishScript->LaunchFishAnimation();
+	_timeToWaitForFish = (float)(std::rand() % 15000);
+	_timeToWaitForFish = _timeToWaitForFish / 1000;
+	_timeToWaitForFish += 5.0f;
+	_fishTimer = 0;
 }

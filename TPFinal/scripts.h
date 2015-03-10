@@ -57,9 +57,15 @@ public:
 class FishScript : public ScriptComponent
 {
 	virtual void Start();
+	bool _fishAnimLaucnhed;
+	float _yPos;
+	float _xPos;
+	float _zAngle;
 public:
 	FishScript(Model* model) : ScriptComponent(model){}
 	virtual void Action(UpdateArgs& args);
+
+	void LaunchFishAnimation();
 };
 
 ///////////////////

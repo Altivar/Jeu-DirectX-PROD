@@ -157,7 +157,8 @@ void WaterScript::Action(UpdateArgs& args)
 ///////////////////
 void FishScript::Start()
 {
-	_baseModel->SetLocation(0.0f, -1.5f, -3.0f);
+	_fishAnimLaucnhed = false;
+	_baseModel->SetLocation(0.0f, -3.0f, -3.0f);
 	//_baseModel->SetRotation(3.14159265f,-3.14159265f/2,-3.14159265f/2);
 	_baseModel->SetRotation(PI, -PI/2, PI);
 }
@@ -166,11 +167,29 @@ void FishScript::Action(UpdateArgs& args)
 {
 	ScriptComponent::Action(args);
 	
-	//_baseModel->Rotate(PI * args.GetDeltaTime(), 0, 0);
-	//_baseModel->Translate(0, -1.0f * args.GetDeltaTime(), 0);
-	/*_baseModel->Translate(-2.0f * args.GetDeltaTime(), 0, 0);
-	if( _baseModel->_location.x < -10.0f )
-		_baseModel->Translate(20.0f, 0, 0);*/
+	if( !_fishAnimLaucnhed )
+		return;
+
+	_yPos += args.GetDeltaTime()*2.0f;
+	_zAngle += PI * args.GetDeltaTime() / 2.4f;
+	_xPos -= args.GetDeltaTime()*2.0f;
+	_baseModel->SetLocation(_xPos, -pow(_yPos,2)-0.5f, -3.0f);
+	_baseModel->SetRotation(0, -PI/2, _zAngle);
+
+	if( _yPos >= 3.0f )
+		_fishAnimLaucnhed = false;
+}
+
+void FishScript::LaunchFishAnimation()
+{
+	_fishAnimLaucnhed = true;
+	_yPos = -2.5f;
+	_zAngle = -PI/1.8f;
+
+	float randStartPosition = (float)(std::rand() % 4000);
+	randStartPosition = randStartPosition / 2000;
+	randStartPosition -= 2.0f;
+	_xPos = randStartPosition;
 }
 
 ///////////////////

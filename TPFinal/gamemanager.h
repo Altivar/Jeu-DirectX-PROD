@@ -2,6 +2,7 @@
 #include "args.h"
 
 struct Model;
+class FishScript;
 
 class GameManager
 {
@@ -16,7 +17,7 @@ public:
 	int GetScore() { return _score; }
 	void Pause();
 	float GetTimeScale() { return _timeScale; }
-
+	
 private:
 	GameManager(void);
 	~GameManager(void);
@@ -31,5 +32,13 @@ private:
 	float _timeScale;
 
 	Model* _player;
+	
+	
+	// fish
+	FishScript* _fishScript;
+	void LaunchFish();
+	float _fishTimer;
+	float _timeToWaitForFish;
+
 };
 
