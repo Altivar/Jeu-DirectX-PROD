@@ -186,10 +186,15 @@ void FishScript::LaunchFishAnimation()
 	_yPos = -2.5f;
 	_zAngle = -PI/1.8f;
 
-	float randStartPosition = (float)(std::rand() % 4000);
-	randStartPosition = randStartPosition / 2000;
-	randStartPosition -= 2.0f;
+	float randStartPosition = (float)(std::rand() % 6000);
+	randStartPosition = randStartPosition / 1000.0f;
 	_xPos = randStartPosition;
+
+	int randShininess = (std::rand() % 100);
+	if( randShininess < 10 )
+		_baseModel->SetTexture(".\\Resources\\magicarpe_Shiney_UV.png");
+	else
+		_baseModel->SetTexture(".\\Resources\\magicarpe_UV.png");
 }
 
 ///////////////////
